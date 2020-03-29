@@ -4,14 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bharath.projectmanagement.domain.Project;
-import com.bharath.projectmanagement.domain.repositories.ProjectRepository;
+import com.bharath.projectmanagement.repositories.ProjectRepository;
 
 @Service
 public class ProjectService {
 	// Dependency injection to interface with the backend.
     @Autowired
 	private ProjectRepository projectRepository;
-    
+        
     
     // Method to save/update a project.
     public Project saveOrUpdateProject(Project project) {

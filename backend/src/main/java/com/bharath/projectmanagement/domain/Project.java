@@ -2,6 +2,7 @@ package com.bharath.projectmanagement.domain;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 public class Project {
@@ -25,19 +29,30 @@ public class Project {
 	private String projectName;
 
 	// Custom identifier for users. Will be dispayed on task names to link it to a
-	// project. ID doens't make sense.
+	// project. ID doens't make sense. eg XYZ1
     @NotBlank(message="Project Identifier is required.")
+    @Size(min=4, max =5, message="Please use 4-5 characters")
+    
+    // @Column brings us Database level validations.
+    @Column(unique=true, updatable=false)
+    
 	private String projectIdentifier;
-
+    
+    @NotBlank(message="Project Description is required")
 	private String projectDescription;
 
+    // We can define custom patterns for DATES.
+    @JsonFormat(pattern="yyyy-mm-dd")
 	private Date start_date;
-
+    
+    @JsonFormat(pattern="yyyy-mm-dd")
 	private Date end_date;
 
-	private Date created_At;
+    @JsonFormat(pattern="yyyy-mm-dd")
+    private Date created_At;
 
-	private Date updated_At;
+    @JsonFormat(pattern="yyyy-mm-dd")
+    private Date updated_At;
 
 	// Whenever we create a new object. Assign that to created_At
 	@PrePersist
