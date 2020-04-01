@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bharath.projectmanagement.domain.Project;
+import com.bharath.projectmanagement.exceptions.ProjectIDException;
 import com.bharath.projectmanagement.repositories.ProjectRepository;
 
 @Service
@@ -14,9 +15,23 @@ public class ProjectService {
         
     
     // Method to save/update a project.
-    public Project saveOrUpdateProject(Project project) {
+    public Object saveOrUpdateProject(Project project) {
     	
     	//Very simple enough for now. No validations here. Will be handled in the controller.
-    	return projectRepository.save(project);
+    	try {
+    	  project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+    	  return projectRepository.save(project);
+		} catch (Exception e) {
+			
+			if (e.getMessage().contains("project_identifier")) {
+				throw new ProjectIDException(
+				  project.getProjectIdentifier().toUpperCase() + " already exists"
+				);
+			}
+			
+			return null;
+			
+		}
+    	
     }
 }

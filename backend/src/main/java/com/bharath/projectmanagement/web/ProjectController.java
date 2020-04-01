@@ -34,7 +34,16 @@ public class ProjectController {
 	  if (result.hasErrors()) {
 		  return errorService.mapValidationService(result);
 	  }
-	  Project createdProject = projectService.saveOrUpdateProject(project);
-	  return new ResponseEntity<Project>(createdProject, HttpStatus.OK);
+//	  In this case project returned can either be null or the entire project itself. 
+//	  Check the instance of project returned. If null was returned then there's some uncaught error.
+	  Object createdProject = projectService.saveOrUpdateProject(project);
+	  
+	  if(createdProject instanceof Project ) {
+		  return new ResponseEntity<Object>(createdProject, HttpStatus.OK);
+	  } else {
+		  return new ResponseEntity<String>("Uncaught Exception Occured", HttpStatus.BAD_GATEWAY);
+	  }
+	  
+	  
   }
 }
