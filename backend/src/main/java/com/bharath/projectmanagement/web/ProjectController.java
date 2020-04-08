@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,4 +49,27 @@ public class ProjectController {
 	  
 	  
   }
+  
+   // Find by Identifer will have the base URL pattern.
+  @GetMapping("/{projectId}")
+  public ResponseEntity<?> getProjectByIdentifier(@PathVariable String projectId) {
+	  Project project = projectService.findProjectByIndetifier(projectId);
+	  return new ResponseEntity<Project>(project, HttpStatus.OK);
+  }
+  
+  
+  // Find all Projects
+  @GetMapping("/all")
+  public Iterable<Project> findAllProjects() {
+	  return projectService.findAllProjects();
+  }
+  
+  // Delete by identifier
+  @DeleteMapping("/{projectId}")
+  public ResponseEntity<?> deleteProjectByIdentifier(@PathVariable String projectId) {
+	  projectService.deleteProjectByIndetifier(projectId);
+	  return new ResponseEntity<String>("Success", HttpStatus.OK);
+  }
+  
+  
 }

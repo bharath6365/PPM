@@ -34,4 +34,47 @@ public class ProjectService {
 		}
     	
     }
+    
+    // Method to find a project by identifier.
+    public Project findProjectByIndetifier(String projectIdentifier) {
+    	
+//    	Handle NULL Pointer Exception. Reuse our Custom Exception.
+    	
+    	Project project = projectRepository.findByProjectIdentifier(projectIdentifier.toUpperCase());
+    	
+    	if (project == null) {
+    		throw new ProjectIDException(
+  				  "Project with identifer - " + projectIdentifier +  " does not exist."
+  			);	
+    	} else {
+    		return project;
+    	}
+    	 
+    }
+    
+    
+    
+    // Find all Projects. If there are no projects empty response is sent from the API.
+    public Iterable<Project> findAllProjects() {
+    	return projectRepository.findAll();
+    }
+    
+    
+ // Method to delete a project by identifier.
+    public void deleteProjectByIndetifier(String projectIdentifier) {
+    	
+//    	Handle NULL Pointer Exception. Reuse our Custom Exception.
+    	
+    	Project project = projectRepository.findByProjectIdentifier(projectIdentifier.toUpperCase());
+    	
+    	if (project == null) {
+    		throw new ProjectIDException(
+  				  "Project with identifer - " + projectIdentifier +  " does not exist."
+  			);	
+    	} else {
+    		projectRepository.delete(project);
+    	}
+    	 
+    }
+    
 }
