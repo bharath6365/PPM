@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 
+import {connect} from 'react-redux';
+
+import PropTypes from 'prop-types';
+
+import {createProject} from '../../actions/projectActions';
+
 /*
   Form input names should match the backend.
-*/
-export default class CreateProjectForm extends Component {
+*/ 
+class CreateProjectForm extends Component {
   constructor(props){
     super(props);
 
@@ -33,7 +39,7 @@ export default class CreateProjectForm extends Component {
  handleSubmit = (e) => {
   e.preventDefault();
   const {projectName, projectDescription, projectIdentifier, start_date, end_date} = this.state;
-
+  const {createProject, history} = this.props;
   const newProject = {
     projectName,
     projectDescription,
@@ -42,7 +48,8 @@ export default class CreateProjectForm extends Component {
     end_date
   }
 
-  console.log(newProject);
+  // Pass it off to the action
+  createProject(newProject, history);
  }
 
   render() {
@@ -102,3 +109,13 @@ export default class CreateProjectForm extends Component {
     );
   }
 }
+
+// Check the spelling on propTypes.
+CreateProjectForm.propTypes = {
+  createProject: PropTypes.func.isRequired
+}
+
+
+export default connect(null, {
+  createProject
+})(CreateProjectForm)
