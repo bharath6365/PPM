@@ -63,3 +63,26 @@ img {
 .form-control::placeholder {
   color: #bbb !important;
 }
+
+/*
+  Form errors.
+*/
+
+.form-group p{
+  opacity: 0;
+  pointer-events: none;
+  color: red;
+  transform: translateX(-100px);
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.form-group.error input,
+.form-group.error textarea {
+    outline: 1px solid red;
+}
+
+ .form-group.error p {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: all;
+}

@@ -52,7 +52,10 @@ class CreateProjectForm extends Component {
   createProject(newProject, history);
  }
 
+ 
   render() {
+    const {errors} = this.props;
+    const formGroup = "form-group";
     return (
       <div className="register">
         <div className="container">
@@ -61,31 +64,41 @@ class CreateProjectForm extends Component {
               <h5 className="display-4 text-center">Create / Edit Project form</h5>
               <hr />
               <form onSubmit={this.handleSubmit}>
-                <div className="form-group">
+                <div 
+                  className={errors.projectName ? `error ${formGroup}` : `${formGroup}`} 
+                >
                   <input type="text" className="form-control form-control-lg " placeholder="Project Name" 
                   name="projectName"
-                  required
+                  
                   onChange={this.onChange}
                   value={this.state.projectName}
                   />
+                  <p>{errors.projectName}</p>
                 </div>
-                <div className="form-group">
+
+                <div 
+                  className={errors.projectIdentifier ? `error ${formGroup}` : `${formGroup}`} 
+                >
                   <input type="text" className="form-control form-control-lg" placeholder="Unique Project ID" 
                   name="projectIdentifier"
-                  required
+                  
                   onChange={this.onChange}
                   value={this.state.projectIdentifier}
                   />
+                  <p>{errors.projectIdentifier}</p>
                 </div>
-                <div className="form-group">
+                <div 
+                  className={errors.projectDescription ? `error ${formGroup}` : `${formGroup}`} 
+                >
                   <textarea 
                     className="form-control form-control-lg" 
                     placeholder="Project Description" 
                     name="projectDescription"
-                    required
+                    
                     value={this.state.projectDescription}
                     onChange={this.onChange}
                   />
+                  <p>{errors.projectDescription}</p>
                 </div>
                 <h6>Start Date</h6>
                 <div className="form-group">
@@ -110,12 +123,19 @@ class CreateProjectForm extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    errors: state.formErrors
+  }
+}
+
 // Check the spelling on propTypes.
 CreateProjectForm.propTypes = {
-  createProject: PropTypes.func.isRequired
+  createProject: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired
 }
 
 
-export default connect(null, {
+export default connect(mapStateToProps, {
   createProject
 })(CreateProjectForm)

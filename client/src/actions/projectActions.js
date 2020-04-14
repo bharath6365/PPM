@@ -11,7 +11,10 @@ export const createProject = (project, history) => {
         calls will render a 200 response. So we don't need to read the response at all.
         We can redirect the user to the dashboard page :D       
       */
-     history.push("/dashboard");
+      if ((await res).status !== 200) {
+        throw new Error("Create Project Request failed");
+      }
+      history.push("/dashboard");
     } catch (error) {
       // When you are here it means something went wrong. Lets dispatch an action to hold the errors.
       dispatch({
