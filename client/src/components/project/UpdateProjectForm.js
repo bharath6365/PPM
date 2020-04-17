@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 
 import {connect} from 'react-redux';
+import {toastr} from 'react-redux-toastr'
+// Not technically create project. Can also be used to update.
+import { createProject, getProjectByIdentifier, resetProject } from '../../actions/projectActions';
 
-import PropTypes from 'prop-types';
+class UpdateProjectForm extends Component {
 
-import {createProject} from '../../actions/projectActions';
-
-/*
-  Form input names should match the backend.
-*/ 
-class CreateProjectForm extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-
+    
+    // This will change after we receive props.
     this.state = {
       projectName: "",
       projectDescription: "",
@@ -31,8 +29,8 @@ class CreateProjectForm extends Component {
     [e.target.name]: e.target.value
   })
  }
- 
- /*
+
+  /*
    Form Submission.
  */
  handleSubmit = (e) => {
@@ -44,15 +42,51 @@ class CreateProjectForm extends Component {
     projectDescription,
     projectIdentifier,
     start_date,
-    end_date
+    end_date,
+    // This is required for JPA to not consider as a new project.
+    id: this.props.project.id
   }
-
+  toastr.success(`Project Updated`, `Project with the title ${newProject.projectName} has been updated`);
   // Pass it off to the action
   createProject(newProject, history);
  }
+  
+  componentDidMount() {
+    // Get the Project Identifer from the URL.
+    let parameter;
+    const {match} = this.props;
+    // If Project Identifier is present in the URL. Dispatch the get project action.
+    if (match.params) {
+      parameter = match.params.identifier;
+      setTimeout(() => {
+        this.props.getProjectByIdentifier(parameter);
+      }, 200)
+      
+    } else {
+      // Todo: Redirect back to the dashboard.
+    }
+    
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    // Project was Empty before. But now there was an update for the project.
+    if (Object.keys(this.props.project).length < 1 && Object.keys(nextProps.project).length > 1) {
+      this.setState({
+        projectName: nextProps.project.projectName,
+        projectDescription: nextProps.project.projectDescription,
+        projectIdentifier: nextProps.project.projectIdentifier,
+        start_date: nextProps['project']['start_date'],
+        end_date: nextProps['project']['end_date']
+      })
+    }
+  }
 
- 
-  render() {
+  // On unmount reset the project object.
+  componentWillUnmount() {
+    this.props.resetProject();
+  }
+
+  renderForm() {
     const {errors} = this.props;
     const formGroup = "form-group";
     return (
@@ -80,7 +114,7 @@ class CreateProjectForm extends Component {
                 >
                   <input type="text" className="form-control form-control-lg" placeholder="Unique Project ID" 
                   name="projectIdentifier"
-                  
+                  disabled
                   onChange={this.onChange}
                   value={this.state.projectIdentifier}
                   />
@@ -118,23 +152,34 @@ class CreateProjectForm extends Component {
           </div>
         </div>
       </div>
-    );
+    )
+  }
+
+  render() {
+    // This is set only when project is fetched from the API
+    console.log('State is ', this.state);
+    if (this.state.projectName.length > 0) {
+      return this.renderForm();
+    }
+    // Todo: Add a common loader for our entire project.
+    return (
+      <div>
+        Loading...
+      </div>
+    )
   }
 }
 
 const mapStateToProps = (state) => {
   return {
+    project: state.project.project,
     errors: state.formErrors
   }
 }
 
-// Check the spelling on propTypes.
-CreateProjectForm.propTypes = {
-  createProject: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired
-}
-
 
 export default connect(mapStateToProps, {
-  createProject
-})(CreateProjectForm)
+  getProjectByIdentifier,
+  createProject,
+  resetProject
+})(UpdateProjectForm);
