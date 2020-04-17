@@ -1,8 +1,10 @@
 import axios from "axios";
-import {GET_FORM_ERRORS, GET_ALL_PROJECTS, GET_PROJECT, RESET_PROJECT} from "./types";
+import {toastr} from 'react-redux-toastr'
+import {GET_FORM_ERRORS, GET_ALL_PROJECTS, GET_PROJECT, RESET_PROJECT, RESET_ERRORS} from "./types";
 
 // When there is a successful project creation redirect to dashboard programatically.
-export const createProject = (project, history) => {
+export const createProject = (project, history, update=false) => {
+  const projectAction  = update? 'Updated': 'Created';
   return async (dispatch) => {
     try {
       const res = axios.post("http://localhost:8080/api/project", project);
@@ -14,6 +16,7 @@ export const createProject = (project, history) => {
       if ((await res).status !== 200) {
         throw new Error("Create Project Request failed");
       }
+      toastr.success('Success', `Project with the name ${project.projectName} has been ${projectAction}`)
       history.push("/dashboard");
     } catch (error) {
       // When you are here it means something went wrong. Lets dispatch an action to hold the errors.
@@ -40,7 +43,7 @@ export const getAllProjects = () => {
   }
 }
 
-export const getProjectByIdentifier = (identifier) => {
+export const getProjectByIdentifier = (identifier, history) => {
   return async (dispatch) => {
     try {
       const res = await axios.get(`http://localhost:8080/api/project/${identifier}`);
@@ -49,13 +52,20 @@ export const getProjectByIdentifier = (identifier) => {
         payload: res.data
       })
     } catch(e) {
-      console.error(e);
+      toastr.error(`Error`, `Project not found`);
+      history.push('/dashboard');
     }
   }
 }
 
 export const resetProject = (identifier) => {
-  return ({
-    type: RESET_PROJECT
-  })
+  return dispatch => {
+    dispatch({
+      type: RESET_ERRORS
+    })
+
+    dispatch({
+      type: RESET_PROJECT
+    })
+  }
 }

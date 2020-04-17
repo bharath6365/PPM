@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import {connect} from 'react-redux';
-import {toastr} from 'react-redux-toastr'
 // Not technically create project. Can also be used to update.
 import { createProject, getProjectByIdentifier, resetProject } from '../../actions/projectActions';
 
@@ -46,9 +45,8 @@ class UpdateProjectForm extends Component {
     // This is required for JPA to not consider as a new project.
     id: this.props.project.id
   }
-  toastr.success(`Project Updated`, `Project with the title ${newProject.projectName} has been updated`);
   // Pass it off to the action
-  createProject(newProject, history);
+  createProject(newProject, history, true);
  }
   
   componentDidMount() {
@@ -56,14 +54,19 @@ class UpdateProjectForm extends Component {
     let parameter;
     const {match} = this.props;
     // If Project Identifier is present in the URL. Dispatch the get project action.
-    if (match.params) {
+    if (match.params.identifier) {
       parameter = match.params.identifier;
       setTimeout(() => {
-        this.props.getProjectByIdentifier(parameter);
+        this.props.getProjectByIdentifier(parameter, this.props.history);
       }, 200)
       
     } else {
-      // Todo: Redirect back to the dashboard.
+      // console.log('This ran');
+      // // Todo: Redirect back to the dashboard.
+      // // Send a message to the user saying project not found
+      // toastr.error(`Error`, `Project not found`);
+      // // Redirect to dashboard.
+      // this.props.history.push('/dashboard');
     }
     
   }
@@ -158,7 +161,7 @@ class UpdateProjectForm extends Component {
   render() {
     // This is set only when project is fetched from the API
     console.log('State is ', this.state);
-    if (this.state.projectName.length > 0) {
+    if (this.state.projectIdentifier.length > 0) {
       return this.renderForm();
     }
     // Todo: Add a common loader for our entire project.
