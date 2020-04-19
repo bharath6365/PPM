@@ -1,4 +1,4 @@
-import {GET_ALL_PROJECTS, GET_PROJECT, RESET_PROJECT} from '../actions/types';
+import {GET_ALL_PROJECTS, GET_PROJECT, RESET_PROJECT, DELETE_PROJECT} from '../actions/types';
 
 const INITIAL_STATE = {
   projects: [],
@@ -22,10 +22,12 @@ export default function (state=INITIAL_STATE, action) {
         }
 
       case RESET_PROJECT:
+      case DELETE_PROJECT:
         return {
           ...state,
           project: {}
         }
+
 
     default: 
     return state;

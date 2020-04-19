@@ -10,3 +10,5 @@ export const GET_PROJECT = 'GET_PROJECT';
 
 // When we are done viewing a project, reset it in unmount.
 export const RESET_PROJECT = 'RESET_PROJECT';
+
+export const DELETE_PROJECT = 'DELETE_PROJECT';

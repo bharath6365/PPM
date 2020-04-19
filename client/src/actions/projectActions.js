@@ -1,6 +1,6 @@
 import axios from "axios";
 import {toastr} from 'react-redux-toastr'
-import {GET_FORM_ERRORS, GET_ALL_PROJECTS, GET_PROJECT, RESET_PROJECT, RESET_ERRORS} from "./types";
+import {GET_FORM_ERRORS, GET_ALL_PROJECTS, GET_PROJECT, RESET_PROJECT, RESET_ERRORS, DELETE_PROJECT} from "./types";
 
 // When there is a successful project creation redirect to dashboard programatically.
 export const createProject = (project, history, update=false) => {
@@ -67,5 +67,24 @@ export const resetProject = (identifier) => {
     dispatch({
       type: RESET_PROJECT
     })
+  }
+}
+
+export const deleteProject = (identifier, history) => {
+  return async(dispatch) => {
+    try {
+      await axios.delete(`http://localhost:8080/api/project/${identifier}`);
+      dispatch({
+        type: DELETE_PROJECT
+      })
+
+      toastr.info('Success', 'Project deleted');
+      
+      // Todo: Move it to a function.
+      history.push('/dashboard');
+    } catch(e) {
+      console.error(e);
+      toastr.error('Error', 'Delete Project Operation failed');
+    }
   }
 }

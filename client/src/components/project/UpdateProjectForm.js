@@ -48,6 +48,7 @@ class UpdateProjectForm extends Component {
   // Pass it off to the action
   createProject(newProject, history, true);
  }
+ 
   
   componentDidMount() {
     // Get the Project Identifer from the URL.
