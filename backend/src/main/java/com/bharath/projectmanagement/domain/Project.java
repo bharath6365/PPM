@@ -2,11 +2,14 @@ package com.bharath.projectmanagement.domain;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotBlank;
@@ -53,6 +56,21 @@ public class Project {
 
     @JsonFormat(pattern="yyyy-mm-dd")
     private Date updated_At;
+    
+    
+    // Backlog
+    // When I fetch the project get me the backlog,
+    // When I delete the project automatically delete the back logs.
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy ="project")
+    private Backlog backlog;
+
+	public Backlog getBacklog() {
+		return backlog;
+	}
+
+	public void setBacklog(Backlog backlog) {
+		this.backlog = backlog;
+	}
 
 	// Whenever we create a new object. Assign that to created_At
 	@PrePersist

@@ -3,8 +3,10 @@ package com.bharath.projectmanagement.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bharath.projectmanagement.domain.Backlog;
 import com.bharath.projectmanagement.domain.Project;
 import com.bharath.projectmanagement.exceptions.ProjectIDException;
+import com.bharath.projectmanagement.repositories.BacklogRepository;
 import com.bharath.projectmanagement.repositories.ProjectRepository;
 
 @Service
@@ -12,7 +14,9 @@ public class ProjectService {
 	// Dependency injection to interface with the backend.
     @Autowired
 	private ProjectRepository projectRepository;
-        
+    
+    @Autowired
+    private BacklogRepository backlogRepository;
     
     // Method to save/update a project.
     public Object saveOrUpdateProject(Project project) {
@@ -20,6 +24,26 @@ public class ProjectService {
     	//Very simple enough for now. No validations here. Will be handled in the controller.
     	try {
     	  project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+    	  
+    	  // We need to create a backlog now when creating a project. Remember for save methods
+    	  // there won't be any id passed on.
+    	  
+    	  if (project.getId() == null) {
+    		  Backlog backlog = new Backlog();
+    		  project.setBacklog(backlog);
+    		  backlog.setProject(project);
+    		  backlog.setProjectIdentifier(project.getProjectIdentifier());
+    	  } else {
+    		  // This is an update operation. Backlog will not be passed from the frontend.
+    		  // Find it first
+    		  String projectIdentifer = project.getProjectIdentifier();
+    		  Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifer);
+    		  
+    		  // Todo: Refactor to a function
+    		  project.setBacklog(backlog);
+    		  backlog.setProject(project);
+    		  backlog.setProjectIdentifier(project.getProjectIdentifier());
+    	  }
     	  return projectRepository.save(project);
 		} catch (Exception e) {
 			
