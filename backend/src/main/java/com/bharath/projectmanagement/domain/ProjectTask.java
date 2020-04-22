@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotBlank;
+
+import org.hibernate.annotations.ColumnDefault;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -35,14 +39,21 @@ public class ProjectTask {
 	@Column(updatable = false)
 	private String projectSeqeunce; 
 	
+	// Project Description / Summray
 	@NotBlank(message = "Task Summary is required")
 	private String summary;
 	
 	// The current status of the project
-	private String status;
+	@Column(length = 32, columnDefinition = "varchar(12) default 'TODO'")
+	@Enumerated(EnumType.STRING)
+	private StatusType status = StatusType.TODO;
 	
+
+
 	// Tasks will be grouped based on priority.
-	private Integer priority;
+	@Column(length = 32, columnDefinition = "varchar(12) default 'LOW'")
+	@Enumerated(EnumType.STRING)
+	private PriorityType priority = PriorityType.LOW;
 	
 	// Many to one with Backlogs.
 	
@@ -117,19 +128,18 @@ public class ProjectTask {
 		this.summary = summary;
 	}
 
-	public String getStatus() {
+
+	public StatusType getStatus() {
 		return status;
 	}
+    
+	
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public Integer getPriority() {
+	public PriorityType getPriority() {
 		return priority;
 	}
 
-	public void setPriority(Integer priority) {
+	public void setPriority(PriorityType priority) {
 		this.priority = priority;
 	}
 
@@ -139,6 +149,10 @@ public class ProjectTask {
 
 	public void setProjectIdentifer(String projectIdentifer) {
 		this.projectIdentifer = projectIdentifer;
+	}
+	
+	public void setStatus(StatusType status) {
+		this.status = status;
 	}
 
 	public Date getDueDate() {
@@ -174,7 +188,18 @@ public class ProjectTask {
 				+ status + ", priority=" + priority + ", projectIdentifer=" + projectIdentifer + ", dueDate=" + dueDate
 				+ ", created_At=" + created_At + ", updated_At=" + updated_At + "]";
 	}
-	
     
+	private enum StatusType{
+		TODO,
+		INPROGRESS,
+		DONE
+	}
 	
+	private enum PriorityType{
+		LOW,
+		HIGH,
+		URGENT
+	}
 }
+
+
