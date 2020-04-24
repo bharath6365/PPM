@@ -58,8 +58,18 @@ public class ProjectTask {
 	// Many to one with Backlogs.
 	
 	@Column(updatable = false)
-	private String projectIdentifer;
+	private String projectIdentifier;
 	
+	public String getProjectIdentifier() {
+		return projectIdentifier;
+	}
+
+	public void setProjectIdentifier(String projectIdentifier) {
+		this.projectIdentifier = projectIdentifier;
+	}
+
+
+
 	// Due date for the project
 	private Date dueDate;
 	
@@ -143,14 +153,6 @@ public class ProjectTask {
 		this.priority = priority;
 	}
 
-	public String getProjectIdentifer() {
-		return projectIdentifer;
-	}
-
-	public void setProjectIdentifer(String projectIdentifer) {
-		this.projectIdentifer = projectIdentifer;
-	}
-	
 	public void setStatus(StatusType status) {
 		this.status = status;
 	}
@@ -185,7 +187,7 @@ public class ProjectTask {
 	@Override
 	public String toString() {
 		return "ProjectTask [id=" + id + ", projectSeqeunce=" + projectSeqeunce + ", summary=" + summary + ", status="
-				+ status + ", priority=" + priority + ", projectIdentifer=" + projectIdentifer + ", dueDate=" + dueDate
+				+ status + ", priority=" + priority + ", projectIdentifer=" + projectIdentifier + ", dueDate=" + dueDate
 				+ ", created_At=" + created_At + ", updated_At=" + updated_At + "]";
 	}
     

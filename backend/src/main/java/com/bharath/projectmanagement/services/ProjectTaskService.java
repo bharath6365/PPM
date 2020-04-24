@@ -8,6 +8,8 @@ import com.bharath.projectmanagement.domain.ProjectTask;
 import com.bharath.projectmanagement.repositories.BacklogRepository;
 import com.bharath.projectmanagement.repositories.ProjectTaskRepository;
 
+import antlr.collections.List;
+
 @Service
 public class ProjectTaskService {
 	
@@ -16,16 +18,17 @@ private BacklogRepository backlogRepository;
 
 @Autowired
 private ProjectTaskRepository projectTaskRepository;
-  
+ 
+public Iterable<ProjectTask> findAllTasks(String id) {
 	
+	return projectTaskRepository.findByProjectIdentifier(id);
+}
+
  public ProjectTask addProjectTask(String projectIdentifer, ProjectTask projectTask) {
 	 // Find the backlog based on the projectIdentifer.
 	 // TODO: Handle Exception when project ain't found.
 	 Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifer);
 	 
-	 System.out.println("Backlog is" + backlog.toString());
-	 
-	 System.out.println("Task is" + projectTask.toString());
 	 
 	 // Associate projecttask with the backlog.
 	 projectTask.setBacklog(backlog);
@@ -43,7 +46,7 @@ private ProjectTaskRepository projectTaskRepository;
 	 
 	 // Add the project identifier to the project task
 	 
-	 projectTask.setProjectIdentifer(projectIdentifer);
+	 projectTask.setProjectIdentifier(projectIdentifer);
 	 
 	 return projectTaskRepository.save(projectTask);
  }
