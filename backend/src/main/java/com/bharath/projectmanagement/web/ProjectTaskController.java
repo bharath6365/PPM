@@ -44,9 +44,9 @@ public class ProjectTaskController {
 			  return errorService.mapValidationService(result);
 		  }
 		
-		ProjectTask projectTaskDB = projectTaskService.addProjectTask(projectIdentifier, task);
+		Object projectTaskDB = projectTaskService.addProjectTask(projectIdentifier, task);
 		
-		return new ResponseEntity<ProjectTask>(projectTaskDB, HttpStatus.OK);
+		return new ResponseEntity<Object>(projectTaskDB, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{projectIdentifier}")

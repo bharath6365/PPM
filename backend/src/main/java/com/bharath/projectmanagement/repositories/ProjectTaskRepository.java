@@ -11,6 +11,6 @@ import antlr.collections.List;
 @Repository
 public interface ProjectTaskRepository extends CrudRepository<ProjectTask, Long> {
 	
-	Iterable<ProjectTask> findByProjectIdentifier(String projectIdentifier);
+	Iterable<ProjectTask> findByProjectIdentifierOrderByPriority(String projectIdentifier);
 
 }

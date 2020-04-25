@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.bharath.projectmanagement.domain.Backlog;
 import com.bharath.projectmanagement.domain.ProjectTask;
+import com.bharath.projectmanagement.exceptions.ProjectIdentifierNotFoundException;
 import com.bharath.projectmanagement.repositories.BacklogRepository;
 import com.bharath.projectmanagement.repositories.ProjectTaskRepository;
 
@@ -21,13 +22,19 @@ private ProjectTaskRepository projectTaskRepository;
  
 public Iterable<ProjectTask> findAllTasks(String id) {
 	
-	return projectTaskRepository.findByProjectIdentifier(id);
+	return projectTaskRepository.findByProjectIdentifierOrderByPriority(id);
 }
 
- public ProjectTask addProjectTask(String projectIdentifer, ProjectTask projectTask) {
+ public Object addProjectTask(String projectIdentifer, ProjectTask projectTask) {
 	 // Find the backlog based on the projectIdentifer.
 	 // TODO: Handle Exception when project ain't found.
 	 Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifer);
+	 
+	 if (backlog == null) {
+		 System.out.println("This rannnnnnn");
+		 throw new ProjectIdentifierNotFoundException("Project Identifier not found");
+		
+	 }
 	 
 	 
 	 // Associate projecttask with the backlog.
