@@ -75,13 +75,12 @@ export const deleteProject = (identifier, history) => {
     try {
       await axios.delete(`http://localhost:8080/api/project/${identifier}`);
       dispatch({
-        type: DELETE_PROJECT
+        type: DELETE_PROJECT,
+        payload: identifier
       })
 
       toastr.info('Success', 'Project deleted');
       
-      // Todo: Move it to a function.
-      history.push('/dashboard');
     } catch(e) {
       console.error(e);
       toastr.error('Error', 'Delete Project Operation failed');

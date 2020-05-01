@@ -22,10 +22,21 @@ export default function (state=INITIAL_STATE, action) {
         }
 
       case RESET_PROJECT:
-      case DELETE_PROJECT:
         return {
           ...state,
           project: {}
+        }
+
+      case DELETE_PROJECT:
+        /* 
+          2 things
+          1) Current project to null
+          2) Remove this project from the list of all projects.
+        */
+        return {
+          ...state,
+          project: {},
+          projects: state.projects.filter(project => project.projectIdentifier !== action.payload),
         }
 
 

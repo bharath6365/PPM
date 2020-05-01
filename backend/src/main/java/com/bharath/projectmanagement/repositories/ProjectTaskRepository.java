@@ -12,5 +12,7 @@ import antlr.collections.List;
 public interface ProjectTaskRepository extends CrudRepository<ProjectTask, Long> {
 	
 	Iterable<ProjectTask> findByProjectIdentifierOrderByPriority(String projectIdentifier);
+	
+	ProjectTask findByProjectSeqeunce(String sequence);
 
 }

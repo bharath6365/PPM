@@ -2,12 +2,15 @@ package com.bharath.projectmanagement.web;
 
 import javax.validation.Valid;
 
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,6 +55,46 @@ public class ProjectTaskController {
 	@GetMapping("/{projectIdentifier}")
 	public Iterable<ProjectTask> getAllTasks(@PathVariable String projectIdentifier) {
 		return projectTaskService.findAllTasks(projectIdentifier);
+	}
+	
+	@GetMapping("/{projectIdentifier}/{projectSequence}")	
+	public ResponseEntity<Object> getProjectTask
+	(
+	  @PathVariable String projectSequence,
+	  @PathVariable String projectIdentifier
+	) {
+		Object task = projectTaskService.getTask(projectSequence, projectIdentifier);
+		return new ResponseEntity<Object>(task, HttpStatus.OK);
+	}
+	
+	@PatchMapping("/{projectIdentifier}") 
+		public ResponseEntity<?> updateTask
+		(
+		  @Valid @RequestBody ProjectTask incomingTask,
+		  BindingResult result,
+		  @PathVariable String projectIdentifier
+		) {
+		  
+		  // Handle Exceptions 
+		   if (result.hasErrors()) {
+			  return errorService.mapValidationService(result);
+		   }
+		   
+		   // Get the updated project task.
+		   ProjectTask updatedProjectTask = 
+				   projectTaskService.updateTask(incomingTask, projectIdentifier);
+		   
+		   return new ResponseEntity<>(updatedProjectTask, HttpStatus.OK);
+	   }
+	
+	@DeleteMapping("/{projectIdentifier}/{projectSequence}")	
+	public ResponseEntity<String> deleteProjecTask
+	(
+	  @PathVariable String projectSequence,
+	  @PathVariable String projectIdentifier
+	) {
+		projectTaskService.deleteTask(projectIdentifier, projectSequence);
+		return new ResponseEntity<String>("Deleted", HttpStatus.OK);
 	}
 	
 

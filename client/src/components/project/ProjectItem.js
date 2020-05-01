@@ -11,7 +11,10 @@ import { connect } from 'react-redux';
 class ProjectItem extends Component {
   // Handle project delete.
   handleDelete = (identifier) => {
-    this.props.deleteProject(identifier);
+    const confirmDelete = window.confirm('Do you want to delete this project?');
+    if (confirmDelete) {
+      this.props.deleteProject(identifier, this.props.history);
+    }   
   }
   render() {
     const {project} = this.props;
@@ -40,7 +43,7 @@ class ProjectItem extends Component {
                     <i className="fa fa-edit pr-1">Update Project Info</i>
                   </li>
                 </Link>
-                <li onClick={() => handleDelete(projectIdentifier)} className="list-group-item delete">
+                <li onClick={() => this.handleDelete(projectIdentifier)} className="list-group-item delete">
                   <i className="fa fa-minus-circle pr-1">Delete Project</i>
                 </li>
               </ul>
