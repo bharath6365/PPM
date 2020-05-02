@@ -43,6 +43,19 @@ public class ProjectTask {
 	@NotBlank(message = "Task Summary is required")
 	private String summary;
 	
+	// Summary is just the title of the task. This would be the detailed description. 
+	private String detailedDescription;
+	
+	public String getDetailedDescription() {
+		return detailedDescription;
+	}
+
+	public void setDetailedDescription(String detailedDescription) {
+		this.detailedDescription = detailedDescription;
+	}
+
+
+
 	// The current status of the project
 	@Column(length = 32, columnDefinition = "varchar(12) default 'TODO'")
 	@Enumerated(EnumType.STRING)

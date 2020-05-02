@@ -12,6 +12,8 @@ import Header from './components/layout/Header';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CreateProjectForm from './components/project/CreateProjectForm';
 import UpdateProjectForm from './components/project/UpdateProjectForm';
+import ProjectBoard from './components/ProjectBoard/ProjectBoard';
+import AddProjectTaskForm from './components/ProjectBoard/ProjectTasks/AddProjectTaskForm';
 
 function App() {
   return (
@@ -22,6 +24,9 @@ function App() {
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/add-project" component={CreateProjectForm} />
           <Route exact path="/update-project/:identifier" component={UpdateProjectForm} />
+          {/* Id is the project identifier. */}
+          <Route exact path="/project-board/:id" component={ProjectBoard} />
+          <Route exact path="/add-task/:id" component={AddProjectTaskForm} />
         </div>
           
           {/* User Notifications */}
