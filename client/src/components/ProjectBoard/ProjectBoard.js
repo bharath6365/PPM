@@ -1,16 +1,36 @@
 import React, { Component } from 'react';
 
 import {Link} from 'react-router-dom';
+import AddProjectTaskForm from './ProjectTasks/AddProjectTaskForm';
 
 export default class ProjectBoard extends Component {
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      createProjectModalVisibility: false
+    }    
+  }
+
+  handleCreateProjectClick = () => {
+    this.setState({
+      createProjectModalVisibility: true
+    })
+  }
+
+  handleCreateProjectModalCancel = () => {
+    this.setState({
+      createProjectModalVisibility: false
+    })
+  }
   render() {
     // Get the backlog id from react router.
     const {id} = this.props.match.params;
     return (
       <div className="container">
-        <Link to ={`/add-task/${id}`} className="btn btn-primary mb-3">
+        <button onClick={this.handleCreateProjectClick} className="btn btn-primary mb-3">
           <i className="fas fa-plus-circle"> Create Project Task</i>
-        </Link>
+        </button>
         <br />
         <hr />
 
@@ -50,6 +70,13 @@ export default class ProjectBoard extends Component {
             </div>
           </div>
         </div>
+      
+        {/* Set up Modals */}
+        {/* Create a Task modal */}
+        <AddProjectTaskForm 
+          visibility = {this.state.createProjectModalVisibility}
+          handleClose = {this.handleCreateProjectModalCancel}
+        />
       </div>
     );
   }

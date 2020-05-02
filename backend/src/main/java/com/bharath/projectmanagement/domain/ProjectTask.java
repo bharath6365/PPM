@@ -213,7 +213,7 @@ public class ProjectTask {
 	private enum PriorityType{
 		LOW,
 		HIGH,
-		URGENT
+		MEDIUM
 	}
 }
 
