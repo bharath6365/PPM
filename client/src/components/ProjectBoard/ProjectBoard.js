@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 
+import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import AddProjectTaskForm from './ProjectTasks/AddProjectTaskForm';
+import {addProjectTask} from '../../actions/backlogActions';
 
-export default class ProjectBoard extends Component {
+
+class ProjectBoard extends Component {
   constructor(props) {
     super(props);
     
@@ -11,7 +14,8 @@ export default class ProjectBoard extends Component {
       createProjectModalVisibility: false
     }    
   }
-
+  
+  // Create Task form related.
   handleCreateProjectClick = () => {
     this.setState({
       createProjectModalVisibility: true
@@ -22,6 +26,10 @@ export default class ProjectBoard extends Component {
     this.setState({
       createProjectModalVisibility: false
     })
+  }
+ 
+  handleCreateTaskFormSuccess = (incomingTask) => {
+    console.log('Incoming task is', incomingTask);
   }
   render() {
     // Get the backlog id from react router.
@@ -76,8 +84,14 @@ export default class ProjectBoard extends Component {
         <AddProjectTaskForm 
           visibility = {this.state.createProjectModalVisibility}
           handleClose = {this.handleCreateProjectModalCancel}
+          formSuccess = {this.handleCreateTaskFormSuccess}
         />
       </div>
     );
   }
 }
+
+
+export default connect(null, {
+  addProjectTask
+})(ProjectBoard);

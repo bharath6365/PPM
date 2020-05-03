@@ -6,7 +6,7 @@ incomingTask is the object passed from the form.
 
 */
 export const addProjectTask = (backlogId, incomingTask, history ) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     await axios.post(`/api/backlog/${backlogId}`, incomingTask);
 
     history.push(`/project-board/${backlogId}`);
