@@ -48,6 +48,7 @@ class ProjectBoard extends PureComponent {
   };
   render() {
     const { projectTasks } = this.props;
+    const {errors} = this.props;
 
     // Separate Arrays for different status.
     let todoTasks = [];
@@ -105,6 +106,7 @@ class ProjectBoard extends PureComponent {
           visibility={this.state.createProjectModalVisibility}
           handleClose={this.handleCreateProjectModalCancel}
           formSuccess={this.handleCreateTaskFormSuccess}
+          errors = {errors}
         />
       </div>
     );
@@ -113,7 +115,8 @@ class ProjectBoard extends PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    projectTasks: state.backlog.projectTasks
+    projectTasks: state.backlog.projectTasks,
+    errors: state.formErrors
   };
 };
 
