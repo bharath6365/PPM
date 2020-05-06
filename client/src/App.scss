@@ -5,10 +5,13 @@
 * {
   margin:0;
 }
-::root {
-  $todo: '#ff8a45';
-  $progress: '#bb1fa8';
-  $done: '#29601b'
+:root {
+  --todo: tomato;
+  --inprogress: #512e71;
+  --done: #ffd81a;
+  --high: red;
+  --medium: #a8761a;
+  --low: #4acd4a;
 }
 
 img {
@@ -110,7 +113,7 @@ img {
 .project-board-container {
   background: #1F282E;
   padding: 20px 10px;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .task-container {
@@ -137,15 +140,19 @@ img {
     }
 
     .status {
-      padding: 2px 5px;
-      height: 20px;
-      display: flex;
-      align-items: center;
-      text-transform: capitalize;
-      font-size: 0.65rem;
-      background: #046db3;
-      letter-spacing: 0.4px;
-      border-radius: 20px;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      background: var(--low);
+      margin-right: 15px;
+
+      &.medium {
+        background: var(--medium);
+      }
+
+      &.high{
+        background: var(--high);
+      }
     }
   }
 
@@ -155,4 +162,16 @@ img {
       cursor: pointer;
     }
   }
+}
+
+.todo {
+  background: var(--todo) !important;
+}
+
+.inprogress {
+  background: var(--inprogress) !important;
+}
+
+.done {
+  background: var(--done) !important;
 }

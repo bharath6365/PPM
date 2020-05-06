@@ -78,21 +78,21 @@ class ProjectBoard extends PureComponent {
         <div className="container">
           <div className="row">
             <div className="col-md-12 task-container">
-              <h3 className="group-heading">Todo</h3>
+              <h3 className="group-heading todo">Todo</h3>
               {todoTasks.map((task) => {
                 return <ProjectTask key={task.id}  task={task} />;
               })}
             </div>
 
             <div className="col-md-12 task-container">
-              <h3 className="group-heading">In-Progress</h3>
+              <h3 className="group-heading inprogress">In-Progress</h3>
               {inProgressTasks.map((task) => {
                 return <ProjectTask key={task.id} task={task} />;
               })}
             </div>
 
             <div className="col-md-12 task-container">
-              <h3 className="group-heading">Done</h3>
+              <h3 className="group-heading done">Done</h3>
               {doneTasks.map((task) => {
                 return <ProjectTask key={task.id} task={task} />;
               })}

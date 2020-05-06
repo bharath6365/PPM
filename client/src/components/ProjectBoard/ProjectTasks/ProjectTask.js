@@ -5,8 +5,8 @@ export default function ProjectTask({task}) {
   return (
     <div className="task">
       <div className="task-body">
+        <span className={`status ${task.priority.toLowerCase()}`}></span>
         <p>{task.summary}</p>
-        <span className="status">{task.priority.toLowerCase()}</span>
       </div>
 
       <div className="task-actions">
