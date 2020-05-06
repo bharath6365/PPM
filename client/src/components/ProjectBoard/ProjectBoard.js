@@ -1,42 +1,74 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
-import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import AddProjectTaskForm from './ProjectTasks/AddProjectTaskForm';
-import {addProjectTask} from '../../actions/backlogActions';
+import ProjectTask from './ProjectTasks/ProjectTask';
+import { addProjectTask, getAllTasks } from '../../actions/backlogActions';
 
-
-class ProjectBoard extends Component {
+class ProjectBoard extends PureComponent {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       createProjectModalVisibility: false
-    }    
+    };
   }
-  
+
+  componentDidMount() {
+    const { id: projectIdentifier } = this.props.match.params;
+
+    this.props.getAllTasks(projectIdentifier);
+  }
+
   // Create Task form related.
   handleCreateProjectClick = () => {
     this.setState({
       createProjectModalVisibility: true
-    })
-  }
+    });
+  };
 
   handleCreateProjectModalCancel = () => {
     this.setState({
       createProjectModalVisibility: false
-    })
-  }
- 
+    });
+  };
+
+  // Pass on the incoming task to the action.
   handleCreateTaskFormSuccess = (incomingTask) => {
-    console.log('Incoming task is', incomingTask);
-  }
+    // Get the backlog id from the URL
+    const { id: backlogId } = this.props.match.params;
+    this.props.addProjectTask(backlogId, incomingTask).then(() => {
+      // Hide the create modal.
+      this.setState({
+        createProjectModalVisibility: false
+      });
+    });
+  };
   render() {
-    // Get the backlog id from react router.
-    const {id} = this.props.match.params;
+    const { projectTasks } = this.props;
+
+    // Separate Arrays for different status.
+    let todoTasks = [];
+    let inProgressTasks = [];
+    let doneTasks = [];
+
+    if (projectTasks) {
+      for (let task of projectTasks) {
+        if (task.status === 'INPROGRESS') {
+          inProgressTasks.push(task);
+        } else if (task.status === 'DONE') {
+          doneTasks.push(task);
+        } else {
+          todoTasks.push(task);
+        }
+      }
+    }
+
     return (
-      <div className="container">
-        <button onClick={this.handleCreateProjectClick} className="btn btn-primary mb-3">
+      <div className="project-board-container">
+        <button onClick={this.handleCreateProjectClick} className="btn btn-primary mb-3 float-right">
           <i className="fas fa-plus-circle"> Create Project Task</i>
         </button>
         <br />
@@ -44,54 +76,48 @@ class ProjectBoard extends Component {
 
         <div className="container">
           <div className="row">
-            <div className="col-md-4">
-              <div className="card text-center mb-2">
-                <div className="card-header bg-secondary text-white">
-                  <h3>TO DO</h3>
-                </div>
-              </div>
-
-              <div className="card mb-1 bg-light">
-                <div className="card-header text-primary">ID: projectSequence -- Priority: priorityString</div>
-                <div className="card-body bg-light">
-                  <h5 className="card-title">project_task.summary</h5>
-                  <p className="card-text text-truncate ">project_task.acceptanceCriteria</p>
-                  <Link className="btn btn-primary">View / Update</Link>
-
-                  <button className="btn btn-danger ml-4">Delete</button>
-                </div>
-              </div>
+            <div className="col-md-12 task-container">
+              <h3 className="group-heading">Todo</h3>
+              {todoTasks.map((task) => {
+                return <ProjectTask key={task.id}  task={task} />;
+              })}
             </div>
-            <div className="col-md-4">
-              <div className="card text-center mb-2">
-                <div className="card-header bg-primary text-white">
-                  <h3>In Progress</h3>
-                </div>
-              </div>
+
+            <div className="col-md-12 task-container">
+              <h3 className="group-heading">In-Progress</h3>
+              {inProgressTasks.map((task) => {
+                return <ProjectTask key={task.id} task={task} />;
+              })}
             </div>
-            <div className="col-md-4">
-              <div className="card text-center mb-2">
-                <div className="card-header bg-success text-white">
-                  <h3>Done</h3>
-                </div>
-              </div>
+
+            <div className="col-md-12 task-container">
+              <h3 className="group-heading">Done</h3>
+              {doneTasks.map((task) => {
+                return <ProjectTask key={task.id} task={task} />;
+              })}
             </div>
           </div>
         </div>
-      
+
         {/* Set up Modals */}
         {/* Create a Task modal */}
-        <AddProjectTaskForm 
-          visibility = {this.state.createProjectModalVisibility}
-          handleClose = {this.handleCreateProjectModalCancel}
-          formSuccess = {this.handleCreateTaskFormSuccess}
+        <AddProjectTaskForm
+          visibility={this.state.createProjectModalVisibility}
+          handleClose={this.handleCreateProjectModalCancel}
+          formSuccess={this.handleCreateTaskFormSuccess}
         />
       </div>
     );
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    projectTasks: state.backlog.projectTasks
+  };
+};
 
-export default connect(null, {
-  addProjectTask
+export default connect(mapStateToProps, {
+  addProjectTask,
+  getAllTasks
 })(ProjectBoard);

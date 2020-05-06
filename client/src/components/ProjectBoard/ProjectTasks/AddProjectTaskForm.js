@@ -87,6 +87,7 @@ export default class AddProjectTaskForm extends Component {
                         onChange={this.handleChange}
                       />
                     </div>
+                    <h6>Priority</h6>
                     <div className="form-group">
                       <select 
                         value = {priority} 
@@ -99,7 +100,8 @@ export default class AddProjectTaskForm extends Component {
                         <option value={"LOW"}>Low</option>
                       </select>
                     </div>
-
+                    
+                    <h6>Status</h6>
                     <div className="form-group">
                       <select 
                         value={status} 

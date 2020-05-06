@@ -10,7 +10,7 @@ export default function(state=INITIAL_STATE, action) {
   switch(action.type) {
     
     // Directly from the payload.
-    case GET_BACKLOG: 
+    case GET_BACKLOG:
     return {
       ...state,
       projectTasks: action.payload

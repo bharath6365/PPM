@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 export default class Header extends Component {
   render() {
     return (
-      <nav className="navbar navbar-expand-sm navbar-dark bg-primary mb-4">
+      <nav className="navbar navbar-expand-sm navbar-dark bg-primary">
         <div className="container">
           <a className="navbar-brand" href="Dashboard.html">
             Personal Project Management Tool

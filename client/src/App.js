@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import ReduxToastr from 'react-redux-toastr'
 import store from './store';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import './App.css';
+import './App.scss';
 import './components/Dashboard';
 import Dashboard from './components/Dashboard';
 import Header from './components/layout/Header';
