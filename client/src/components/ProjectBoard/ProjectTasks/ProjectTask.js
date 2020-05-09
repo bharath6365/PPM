@@ -11,7 +11,9 @@ const deleteConfirm = (projectIdentifier, projectSeqeunce, handleDelete) => {
 
 export default function ProjectTask({task, handleUpdate, handleDelete}) {
   return (
-    <div className="task">
+    <div className="task" style={{
+      cursor: 'pointer'
+    }} onDoubleClick={() => handleUpdate(task.projectIdentifier, task.projectSeqeunce)}>
       <div className="task-body">
         <span className={`status ${task.priority.toLowerCase()}`}></span>
         <p>{task.summary}</p>
