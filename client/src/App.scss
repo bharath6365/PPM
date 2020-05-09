@@ -3,7 +3,7 @@
 */
 
 * {
-  margin:0;
+  margin: 0;
 }
 :root {
   --todo: tomato;
@@ -13,7 +13,6 @@
   --medium: #a8761a;
   --low: #4acd4a;
 }
-
 
 img {
   width: 100%;
@@ -84,11 +83,12 @@ img {
   Form errors.
 */
 
-.form-control, select {
+.form-control,
+select {
   border-radius: 20px !important;
 }
 
-.form-group p{
+.form-group p {
   opacity: 0;
   pointer-events: none;
   color: red;
@@ -98,10 +98,10 @@ img {
 
 .form-group.error input,
 .form-group.error textarea {
-    outline: 1px solid red;
+  outline: 1px solid red;
 }
 
- .form-group.error p {
+.form-group.error p {
   opacity: 1;
   transform: translateX(0);
   pointer-events: all;
@@ -116,7 +116,7 @@ img {
   border-radius: 3px;
 }
 .project-board-container {
-  background: #1F282E;
+  background: #1f282e;
   padding: 20px 10px;
   min-height: 100vh;
 }
@@ -126,7 +126,7 @@ img {
 }
 
 .task {
-  background: #2D353B;
+  background: #2d353b;
   display: flex;
   color: #ffffffa3;
   padding: 10px 20px;
@@ -155,7 +155,7 @@ img {
         background: var(--medium);
       }
 
-      &.high{
+      &.high {
         background: var(--high);
       }
     }
@@ -179,4 +179,53 @@ img {
 
 .done {
   background: var(--done) !important;
+}
+
+.create-button {
+  background-color: #a40606;
+  background-image: linear-gradient(315deg, #a40606 0%, #d98324 74%);
+  padding: 10px 15px;
+  color: #fff;
+  outline: none;
+  border: none;
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 5px;
+  position: relative;
+
+  .text,svg {
+    transition: transform 0.7s ease, opacity 0.3s ease;
+  }
+
+  svg {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    transform: translateX(1000%);
+  }
+  
+  &:active,
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    transform-origin: 100% 0;
+    transform: translateX(-5px);
+    
+    .text {
+      transform: translateX(-500%);
+      opacity: 0;
+    }
+
+    svg {
+      transform: scale(2);
+      
+    }
+  }
 }

@@ -6,7 +6,14 @@ import { Link } from 'react-router-dom';
 import AddProjectTaskForm from './ProjectTasks/AddProjectTaskForm';
 import EditProjectTaskForm from './ProjectTasks/EditProjectTaskForm';
 import ProjectTask from './ProjectTasks/ProjectTask';
-import { addProjectTask, getAllTasks, getTask, updateProjecTask, resetProjectTask, deleteProjectTask } from '../../actions/backlogActions';
+import {
+  addProjectTask,
+  getAllTasks,
+  getTask,
+  updateProjecTask,
+  resetProjectTask,
+  deleteProjectTask
+} from '../../actions/backlogActions';
 
 class ProjectBoard extends PureComponent {
   constructor(props) {
@@ -15,7 +22,7 @@ class ProjectBoard extends PureComponent {
     this.state = {
       createProjectModalVisibility: false,
       // Flags for updating tasks.
-      updateProjectModalVisibility: false,
+      updateProjectModalVisibility: false
     };
   }
 
@@ -31,7 +38,7 @@ class ProjectBoard extends PureComponent {
       createProjectModalVisibility: true
     });
   };
-  
+
   // Reusing the same function for create, update modal.
   handleCreateProjectModalCancel = () => {
     this.setState({
@@ -49,7 +56,7 @@ class ProjectBoard extends PureComponent {
     this.props.addProjectTask(backlogId, incomingTask).then(() => {
       // Hide the create modal.
       this.setState({
-        createProjectModalVisibility: false,
+        createProjectModalVisibility: false
       });
     });
   };
@@ -59,30 +66,29 @@ class ProjectBoard extends PureComponent {
    */
   // Trigger the visibility of the update modal.
   handleUpdateProjectClick = (projectIdentifier, taskSequence) => {
-
     this.props.getTask(projectIdentifier, taskSequence);
     this.setState({
       updateProjectModalVisibility: true
-    })
-  }
+    });
+  };
 
   handleUpdateTaskFormSuccess = (incomingTask) => {
     const { id: backlogId } = this.props.match.params;
     this.props.updateProjecTask(backlogId, incomingTask, true).then(() => {
       // Hide the create modal.
       this.setState({
-        updateProjectModalVisibility: false,
+        updateProjectModalVisibility: false
       });
     });
-  }
+  };
 
   handleTaskDelete = (projectIdentifier, taskSequence) => {
     this.props.deleteProjectTask(projectIdentifier, taskSequence);
-  }
+  };
 
   render() {
     const { projectTasks } = this.props;
-    const {errors} = this.props;
+    const { errors } = this.props;
 
     // Separate Arrays for different status.
     let todoTasks = [];
@@ -103,8 +109,27 @@ class ProjectBoard extends PureComponent {
 
     return (
       <div className="project-board-container">
-        <button onClick={this.handleCreateProjectClick} className="btn btn-primary mb-3 float-right">
-          <i className="fas fa-plus-circle"> Create Project Task</i>
+        <button onClick={this.handleCreateProjectClick} className="create-button float-right">
+          <span className="text">Add a TASK</span>
+            <svg
+              class="bi bi-plus"
+              width="1em"
+              height="1em"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z"
+                clip-rule="evenodd"
+              />
+              <path
+                fill-rule="evenodd"
+                d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z"
+                clip-rule="evenodd"
+              />
+            </svg>
         </button>
         <br />
         <hr />
@@ -114,21 +139,42 @@ class ProjectBoard extends PureComponent {
             <div className="col-md-12 task-container">
               <h3 className="group-heading todo">Todo</h3>
               {todoTasks.map((task) => {
-                return <ProjectTask key={task.id}  task={task} handleUpdate={this.handleUpdateProjectClick} handleDelete={this.handleTaskDelete} />;
+                return (
+                  <ProjectTask
+                    key={task.id}
+                    task={task}
+                    handleUpdate={this.handleUpdateProjectClick}
+                    handleDelete={this.handleTaskDelete}
+                  />
+                );
               })}
             </div>
 
             <div className="col-md-12 task-container">
               <h3 className="group-heading inprogress">In-Progress</h3>
               {inProgressTasks.map((task) => {
-                return <ProjectTask key={task.id} task={task} handleUpdate={this.handleUpdateProjectClick} handleDelete={this.handleTaskDelete} />;
+                return (
+                  <ProjectTask
+                    key={task.id}
+                    task={task}
+                    handleUpdate={this.handleUpdateProjectClick}
+                    handleDelete={this.handleTaskDelete}
+                  />
+                );
               })}
             </div>
 
             <div className="col-md-12 task-container">
               <h3 className="group-heading done">Done</h3>
               {doneTasks.map((task) => {
-                return <ProjectTask key={task.id} task={task} handleUpdate={this.handleUpdateProjectClick} handleDelete={this.handleTaskDelete} />;
+                return (
+                  <ProjectTask
+                    key={task.id}
+                    task={task}
+                    handleUpdate={this.handleUpdateProjectClick}
+                    handleDelete={this.handleTaskDelete}
+                  />
+                );
               })}
             </div>
           </div>
@@ -140,7 +186,7 @@ class ProjectBoard extends PureComponent {
           visibility={this.state.createProjectModalVisibility}
           handleClose={this.handleCreateProjectModalCancel}
           formSuccess={this.handleCreateTaskFormSuccess}
-          errors = {errors}
+          errors={errors}
         />
 
         {/* Update Task Modal */}
