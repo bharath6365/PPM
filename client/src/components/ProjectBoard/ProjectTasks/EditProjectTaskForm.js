@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
@@ -16,6 +15,21 @@ export default class EditProjectTaskForm extends Component {
     };
   }
 
+  // Get the current task. We need a couple of things. Project Identifier, task sequence for     differentiating between tasks.
+  componentWillReceiveProps(nextProps) {
+    console.log('Will Receive props', nextProps);
+    if (Object.keys(this.props.currentTask).length < 1 && Object.keys(nextProps.currentTask).length > 0) {
+      // Project Board successfully fetched the current task. Set it to state.
+      this.setState({
+        summary: nextProps.currentTask.summary,
+        detailedDescription: nextProps.currentTask.detailedDescription,
+        dueDate: nextProps.currentTask.dueDate,
+        priority: nextProps.currentTask.priority,
+        status: nextProps.currentTask.status
+      });
+    }
+  }
+
   // Responds to input change and updates the state.
   handleChange = (e) => {
     this.setState({
@@ -26,7 +40,7 @@ export default class EditProjectTaskForm extends Component {
   /*
     Handle Form Submission.
     This component is just responsible for showing errors. Dispatching an action
-    is handled by the parent component.
+    is handled by the parent component. For update tasks to work id needs to be passed.
   */
   handleSubmit = (e) => {
     e.preventDefault();
@@ -36,20 +50,20 @@ export default class EditProjectTaskForm extends Component {
       detailedDescription,
       dueDate,
       priority,
-      status
+      status,
+      id: this.props.currentTask.id
     };
 
     this.props.formSuccess(newTask);
   };
 
   render() {
-    const { errors } = this.props;
-    const { visibility } = this.props;
+    const { errors, visibility } = this.props;
     const { summary, detailedDescription, dueDate, priority, status } = this.state;
     return (
       <Modal show={visibility} onHide={this.props.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add a Task</Modal.Title>
+          <Modal.Title>Update Task</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -58,7 +72,7 @@ export default class EditProjectTaskForm extends Component {
               <div className="row">
                 <div className="col-md-12 m-auto">
                   <form onSubmit={this.handleSubmit}>
-                    <div className={`form-group ${errors.summary ? 'error' : ''}`}>
+                    <div className={`form-group ${errors && errors.summary ? 'error' : ''}`}>
                       <input
                         type="text"
                         className="form-control form-control-lg"
@@ -68,7 +82,7 @@ export default class EditProjectTaskForm extends Component {
                         required
                         onChange={this.handleChange}
                       />
-                      <p>{errors.summary}</p>
+                      <p>{errors && errors.summary}</p>
                     </div>
                     <div className="form-group">
                       <textarea

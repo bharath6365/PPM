@@ -3,6 +3,7 @@ import {toastr} from 'react-redux-toastr'
 import {GET_FORM_ERRORS, GET_ALL_PROJECTS, GET_PROJECT, RESET_PROJECT, RESET_ERRORS, DELETE_PROJECT} from "./types";
 
 // When there is a successful project creation redirect to dashboard programatically.
+// Update uses the same logic TBH.
 export const createProject = (project, history, update=false) => {
   const projectAction  = update? 'Updated': 'Created';
   return async (dispatch) => {

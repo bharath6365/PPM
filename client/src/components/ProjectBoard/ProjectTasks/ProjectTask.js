@@ -1,7 +1,15 @@
 import React from 'react';
 import {Pencil, Trash} from 'react-bootstrap-icons';
 
-export default function ProjectTask({task}) {
+
+const deleteConfirm = (projectIdentifier, projectSeqeunce, handleDelete) => {
+  const shouldDelete = window.confirm("Are you sure you want to delete this task?");
+  if (shouldDelete) {
+    handleDelete(projectIdentifier, projectSeqeunce);
+  }
+}
+
+export default function ProjectTask({task, handleUpdate, handleDelete}) {
   return (
     <div className="task">
       <div className="task-body">
@@ -10,8 +18,9 @@ export default function ProjectTask({task}) {
       </div>
 
       <div className="task-actions">
-        <Pencil />
-        <Trash />
+        {/* Pass on the update task to the parent. */}
+        <Pencil onClick={() => handleUpdate(task.projectIdentifier, task.projectSeqeunce)} />
+        <Trash onClick={() => deleteConfirm(task.projectIdentifier, task.projectSeqeunce, handleDelete)}/>
       </div>
     </div>
   );
