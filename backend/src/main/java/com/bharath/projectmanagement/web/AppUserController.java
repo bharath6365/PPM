@@ -19,38 +19,32 @@ import com.bharath.projectmanagement.validation.AppUserValidator;
 @RestController
 @RequestMapping("/api/users")
 
-
 public class AppUserController {
-	
-	@Autowired
-	private AppUserService appUserService;
-	
-	@Autowired
-	  private MapValidationErrorService errorService;
-	
-	@Autowired
-	private AppUserValidator appUserValidator;
-	
-	@PostMapping("/register")
-	
-	public ResponseEntity<?> registerUser
-	      (
-			@Valid @RequestBody AppUser newUser, 
-		     BindingResult result
-		  ){
-		
-		// Password and confirm password check.
-		appUserValidator.validate(newUser, result);
-		
-		if (result.hasErrors()) {
-			  return errorService.mapValidationService(result);
-		}
-		
-		appUserService.saveUser(newUser);
-		
-		return new ResponseEntity<AppUser>(newUser, HttpStatus.OK);
-		
-		
-	}
+
+  @Autowired
+  private AppUserService appUserService;
+
+  @Autowired
+  private MapValidationErrorService errorService;
+
+  @Autowired
+  private AppUserValidator appUserValidator;
+
+  @PostMapping("/register")
+
+  public ResponseEntity<?> registerUser(@Valid @RequestBody AppUser newUser, BindingResult result) {
+
+    // Password and confirm password check.
+    appUserValidator.validate(newUser, result);
+
+    if (result.hasErrors()) {
+      return errorService.mapValidationService(result);
+    }
+
+    appUserService.saveUser(newUser);
+
+    return new ResponseEntity<AppUser>(newUser, HttpStatus.OK);
+
+  }
 
 }
