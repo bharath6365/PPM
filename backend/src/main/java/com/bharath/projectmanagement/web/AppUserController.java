@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bharath.projectmanagement.domain.AppUser;
 import com.bharath.projectmanagement.services.AppUserService;
 import com.bharath.projectmanagement.services.MapValidationErrorService;
+import com.bharath.projectmanagement.validation.AppUserValidator;
 
 @RestController
 @RequestMapping("/api/users")
@@ -27,6 +28,9 @@ public class AppUserController {
 	@Autowired
 	  private MapValidationErrorService errorService;
 	
+	@Autowired
+	private AppUserValidator appUserValidator;
+	
 	@PostMapping("/register")
 	
 	public ResponseEntity<?> registerUser
@@ -34,6 +38,9 @@ public class AppUserController {
 			@Valid @RequestBody AppUser newUser, 
 		     BindingResult result
 		  ){
+		
+		// Password and confirm password check.
+		appUserValidator.validate(newUser, result);
 		
 		if (result.hasErrors()) {
 			  return errorService.mapValidationService(result);
