@@ -3,7 +3,6 @@ package com.bharath.projectmanagement.domain;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,11 +16,11 @@ import javax.validation.constraints.NotBlank;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 // This is not a normal entity it needs to implement UserService.
@@ -42,11 +41,13 @@ public class AppUser implements UserDetails {
 	private String fullName;
 	
 	
-	@NotBlank(message = "Password is required")
+  @NotBlank(message = "Password is required")
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 	
 	// Not gonna persist this on the database.
-	@Transient
+  @Transient
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String confirmPassword;
 
 	
