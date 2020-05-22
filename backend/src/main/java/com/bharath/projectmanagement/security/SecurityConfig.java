@@ -59,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   @Override
+  // Go to see this CustomAppUserService Class for anything related to authentication.
   protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
     authenticationManagerBuilder.userDetailsService(customAppUserDetailService).passwordEncoder(passwordEncoder);
   }

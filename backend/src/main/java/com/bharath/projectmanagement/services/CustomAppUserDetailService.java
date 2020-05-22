@@ -31,6 +31,7 @@ public class CustomAppUserDetailService implements UserDetailsService {
   
 
   // This is to verify the id passed in the JWT Token.
+  // TODO: Why is transactional used?
   @Transactional
   public AppUser loadUserById(Long id) {
     AppUser user = appUserRepository.getById(id);
