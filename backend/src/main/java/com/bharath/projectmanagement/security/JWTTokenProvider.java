@@ -12,6 +12,7 @@ import com.bharath.projectmanagement.domain.AppUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -49,6 +50,24 @@ public class JWTTokenProvider {
   }
 
   // Validate the tokens
+  public boolean validateToken(String token) {
+    try {
+      Jwts.parser().setSigningKey(TOKEN_SECRET).parseClaimsJws(token);
+
+      return true;
+    } catch(Exception e) {
+      System.out.println("Invalid JWT Token" + e.getMessage());
+
+      return false;
+    }
+  }
 
   // Get the user id from the token.
+  public Long getUserFromToken(String token) {
+    Claims claims = Jwts.parser().setSigningKey(TOKEN_SECRET).parseClaimsJws(token).getBody();
+
+    String id = (String) claims.get("id");
+
+    return Long.parseLong(id);
+  }
 }

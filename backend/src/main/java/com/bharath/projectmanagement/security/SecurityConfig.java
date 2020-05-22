@@ -1,7 +1,5 @@
 package com.bharath.projectmanagement.security;
 
-import static com.bharath.projectmanagement.security.SecurityConstants.SIGNUP_URL;
-
 import com.bharath.projectmanagement.services.CustomAppUserDetailService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +14,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static com.bharath.projectmanagement.security.SecurityConstants.SIGNUP_URL;
 
 @Configuration
 @EnableWebSecurity
@@ -34,6 +35,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
   private CustomAppUserDetailService customAppUserDetailService;
+
+  @Bean
+  public JWTAuthenticationFilter jwtAuthenticationFilter() {
+    return new JWTAuthenticationFilter();
+  }
 
   @Autowired
   private BCryptPasswordEncoder passwordEncoder;
@@ -55,6 +61,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests().antMatchers("/", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg",
             "/**/*.html", "/**/*.css", "/**/*.js")
         .permitAll().antMatchers(SIGNUP_URL).permitAll().anyRequest().authenticated();
+
+
+        // Register the filter
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
 
   }
 

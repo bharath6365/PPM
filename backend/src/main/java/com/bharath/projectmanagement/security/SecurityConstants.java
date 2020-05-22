@@ -6,6 +6,6 @@ public class SecurityConstants {
   public static final String TOKEN_PREFIX = "Bearer ";
   public static final String HEADER_STRING = "Authorization";
   // Setting it to 1 year. Represented in ms.
-  public static final long TOKEN_EXPIRATION_TIME = 3000000;
+  public static final long TOKEN_EXPIRATION_TIME = 30000000L;
   
 }
