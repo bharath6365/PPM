@@ -1,6 +1,12 @@
 package com.bharath.projectmanagement.web;
 
+import java.security.Principal;
+
 import javax.validation.Valid;
+
+import com.bharath.projectmanagement.domain.ProjectTask;
+import com.bharath.projectmanagement.services.MapValidationErrorService;
+import com.bharath.projectmanagement.services.ProjectTaskService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,85 +22,63 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bharath.projectmanagement.domain.ProjectTask;
-import com.bharath.projectmanagement.services.MapValidationErrorService;
-import com.bharath.projectmanagement.services.ProjectTaskService;
-
-import antlr.collections.List;
-
 @RestController
 @CrossOrigin
 @RequestMapping("/api/backlog")
 public class ProjectTaskController {
-	
-	@Autowired
-	private ProjectTaskService projectTaskService;
-	
-	@Autowired
-	  private MapValidationErrorService errorService;
-	
-	@PostMapping("/{projectIdentifier}")
-	public ResponseEntity<?> addProjectTaskToBacklog
-	(
-	  @Valid @RequestBody ProjectTask task,
-	  BindingResult result,
-	  @PathVariable String projectIdentifier			  
-	){
-		
-		// Handle Exceptions 
-		if (result.hasErrors()) {
-			  return errorService.mapValidationService(result);
-		  }
-		
-		Object projectTaskDB = projectTaskService.addProjectTask(projectIdentifier, task);
-		
-		return new ResponseEntity<Object>(projectTaskDB, HttpStatus.OK);
-	}
-	
-	@GetMapping("/{projectIdentifier}")
-	public Iterable<ProjectTask> getAllTasks(@PathVariable String projectIdentifier) {
-		return projectTaskService.findAllTasks(projectIdentifier);
-	}
-	
-	@GetMapping("/{projectIdentifier}/{projectSequence}")	
-	public ResponseEntity<Object> getProjectTask
-	(
-	  @PathVariable String projectSequence,
-	  @PathVariable String projectIdentifier
-	) {
-		Object task = projectTaskService.getTask(projectSequence, projectIdentifier);
-		return new ResponseEntity<Object>(task, HttpStatus.OK);
-	}
-	
-	@PatchMapping("/{projectIdentifier}") 
-		public ResponseEntity<?> updateTask
-		(
-		  @Valid @RequestBody ProjectTask incomingTask,
-		  BindingResult result,
-		  @PathVariable String projectIdentifier
-		) {
-		  
-		  // Handle Exceptions 
-		   if (result.hasErrors()) {
-			  return errorService.mapValidationService(result);
-		   }
-		   
-		   // Get the updated project task.
-		   ProjectTask updatedProjectTask = 
-				   projectTaskService.updateTask(incomingTask, projectIdentifier);
-		   
-		   return new ResponseEntity<>(updatedProjectTask, HttpStatus.OK);
-	   }
-	
-	@DeleteMapping("/{projectIdentifier}/{projectSequence}")	
-	public ResponseEntity<String> deleteProjecTask
-	(
-	  @PathVariable String projectSequence,
-	  @PathVariable String projectIdentifier
-	) {
-		projectTaskService.deleteTask(projectIdentifier, projectSequence);
-		return new ResponseEntity<String>("Deleted", HttpStatus.OK);
-	}
-	
+
+  @Autowired
+  private ProjectTaskService projectTaskService;
+
+  @Autowired
+  private MapValidationErrorService errorService;
+
+  @PostMapping("/{projectIdentifier}")
+  public ResponseEntity<?> addProjectTaskToBacklog(@Valid @RequestBody ProjectTask task, BindingResult result,
+      @PathVariable String projectIdentifier, Principal principal) {
+
+    // Handle Exceptions
+    if (result.hasErrors()) {
+      return errorService.mapValidationService(result);
+    }
+
+    Object projectTaskDB = projectTaskService.addProjectTask(projectIdentifier, task, principal.getName());
+
+    return new ResponseEntity<Object>(projectTaskDB, HttpStatus.OK);
+  }
+
+  @GetMapping("/{projectIdentifier}")
+  public Iterable<ProjectTask> getAllTasks(@PathVariable String projectIdentifier, Principal principal) {
+    return projectTaskService.findAllTasks(projectIdentifier, principal.getName());
+  }
+
+  @GetMapping("/{projectIdentifier}/{projectSequence}")
+  public ResponseEntity<Object> getProjectTask(@PathVariable String projectSequence,
+      @PathVariable String projectIdentifier, Principal principal) {
+    Object task = projectTaskService.getTask(projectSequence, projectIdentifier, principal.getName());
+    return new ResponseEntity<Object>(task, HttpStatus.OK);
+  }
+
+  @PatchMapping("/{projectIdentifier}")
+  public ResponseEntity<?> updateTask(@Valid @RequestBody ProjectTask incomingTask, BindingResult result,
+      @PathVariable String projectIdentifier) {
+
+    // Handle Exceptions
+    if (result.hasErrors()) {
+      return errorService.mapValidationService(result);
+    }
+
+    // Get the updated project task.
+    ProjectTask updatedProjectTask = projectTaskService.updateTask(incomingTask, projectIdentifier);
+
+    return new ResponseEntity<>(updatedProjectTask, HttpStatus.OK);
+  }
+
+  @DeleteMapping("/{projectIdentifier}/{projectSequence}")
+  public ResponseEntity<String> deleteProjecTask(@PathVariable String projectSequence,
+      @PathVariable String projectIdentifier) {
+    projectTaskService.deleteTask(projectIdentifier, projectSequence);
+    return new ResponseEntity<String>("Deleted", HttpStatus.OK);
+  }
 
 }
