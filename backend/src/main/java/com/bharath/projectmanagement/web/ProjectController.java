@@ -56,22 +56,22 @@ public class ProjectController {
   
    // Find by Identifer will have the base URL pattern.
   @GetMapping("/{projectId}")
-  public ResponseEntity<?> getProjectByIdentifier(@PathVariable String projectId) {
-	  Project project = projectService.findProjectByIndetifier(projectId);
+  public ResponseEntity<?> getProjectByIdentifier(@PathVariable String projectId, Principal principal) {
+	  Project project = projectService.findProjectByIndetifier(projectId, principal.getName());
 	  return new ResponseEntity<Project>(project, HttpStatus.OK);
   }
   
   
   // Find all Projects
   @GetMapping("/all")
-  public Iterable<Project> findAllProjects() {
-	  return projectService.findAllProjects();
+  public Iterable<Project> findAllProjects(Principal principal) {
+	  return projectService.findAllProjects(principal.getName());
   }
   
   // Delete by identifier
   @DeleteMapping("/{projectId}")
-  public ResponseEntity<?> deleteProjectByIdentifier(@PathVariable String projectId) {
-	  projectService.deleteProjectByIndetifier(projectId);
+  public ResponseEntity<?> deleteProjectByIdentifier(@PathVariable String projectId, Principal principal) {
+	  projectService.deleteProjectByIndetifier(projectId, principal.getName());
 	  return new ResponseEntity<String>("Success", HttpStatus.OK);
   }
   
