@@ -1,5 +1,7 @@
 package com.bharath.projectmanagement.services;
 
+import java.util.List;
+
 import com.bharath.projectmanagement.domain.AppUser;
 import com.bharath.projectmanagement.domain.Backlog;
 import com.bharath.projectmanagement.domain.Project;
@@ -42,6 +44,24 @@ public class ProjectService {
         backlog.setProject(project);
         backlog.setProjectIdentifier(project.getProjectIdentifier());
       } else {
+        // First things first. Make sure this project that user is trying to update
+        // belongs to him.
+        List<Project> projects = user.getProjects();
+
+        // Make sure the ID is in the list of projects.
+        if (projects == null) {
+          throw new ProjectIDException(project.getProjectIdentifier().toUpperCase() + " not found.");
+        } else {
+          // Make use of the streams api to filter out the project with the incoming id.
+          Long projectId = project.getId();
+
+          Long count = projects.stream().filter(projectinDB -> projectinDB.getId().equals(projectId)).count();
+
+          if (count != 1) {
+            throw new ProjectIDException(project.getProjectIdentifier().toUpperCase() + " not found.");
+          }
+
+        }
         // This is an update operation. Backlog will not be passed from the frontend.
         // Find it first
         String projectIdentifer = project.getProjectIdentifier();
