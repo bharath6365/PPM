@@ -61,7 +61,7 @@ public class ProjectTaskController {
 
   @PatchMapping("/{projectIdentifier}")
   public ResponseEntity<?> updateTask(@Valid @RequestBody ProjectTask incomingTask, BindingResult result,
-      @PathVariable String projectIdentifier) {
+      @PathVariable String projectIdentifier, Principal principal) {
 
     // Handle Exceptions
     if (result.hasErrors()) {
@@ -69,15 +69,16 @@ public class ProjectTaskController {
     }
 
     // Get the updated project task.
-    ProjectTask updatedProjectTask = projectTaskService.updateTask(incomingTask, projectIdentifier);
+    ProjectTask updatedProjectTask = projectTaskService.updateTask(incomingTask, projectIdentifier,
+        principal.getName());
 
     return new ResponseEntity<>(updatedProjectTask, HttpStatus.OK);
   }
 
   @DeleteMapping("/{projectIdentifier}/{projectSequence}")
   public ResponseEntity<String> deleteProjecTask(@PathVariable String projectSequence,
-      @PathVariable String projectIdentifier) {
-    projectTaskService.deleteTask(projectIdentifier, projectSequence);
+      @PathVariable String projectIdentifier, Principal principal) {
+    projectTaskService.deleteTask(projectIdentifier, projectSequence, principal.getName());
     return new ResponseEntity<String>("Deleted", HttpStatus.OK);
   }
 

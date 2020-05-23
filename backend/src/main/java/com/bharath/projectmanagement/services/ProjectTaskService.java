@@ -82,12 +82,12 @@ public class ProjectTaskService {
     return task;
   }
 
-  public ProjectTask updateTask(ProjectTask incomingTask, String projectIdentifier) {
+  public ProjectTask updateTask(ProjectTask incomingTask, String projectIdentifier, String username) {
     // Make sure that incoming project Identifier exists.
     // Reusing get task function due to repetitive logic.
     String projectSequence = incomingTask.getProjectSeqeunce();
 
-    ProjectTask task = (ProjectTask) getTask(projectSequence, projectIdentifier);
+    ProjectTask task = (ProjectTask) getTask(projectSequence, projectIdentifier, username);
 
     if (task == null) {
       throw new ProjectIdentifierNotFoundException("Task Sequence Incorrect");
@@ -98,8 +98,9 @@ public class ProjectTaskService {
 
   }
 
-  public void deleteTask(String projectIdentifier, String projectSequence) {
-    ProjectTask task = (ProjectTask) getTask(projectSequence, projectIdentifier);
+  public void deleteTask(String projectIdentifier, String projectSequence, String username) {
+    // This will handle validations 😉
+    ProjectTask task = (ProjectTask) getTask(projectSequence, projectIdentifier, username);
 
     projectTaskRepository.delete(task);
   }
