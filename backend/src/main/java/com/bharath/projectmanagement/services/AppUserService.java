@@ -37,10 +37,11 @@ public class AppUserService {
 		} catch (Exception e) {
 			
 			throw new UsernameExistsException("Username already exists");
-		}
-		
-		
-		
-	}
+		}		
+  }
+  
+  public AppUser getUserByName(String username) {
+    return userRepository.findByUsername(username);
+  }
 
 }

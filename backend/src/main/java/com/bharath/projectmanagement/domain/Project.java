@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -58,6 +60,14 @@ public class Project {
     @JsonFormat(pattern="yyyy-mm-dd")
     private Date updated_At;
     
+    // User relationship
+    @ManyToOne(fetch = FetchType.LAZY,cascade=CascadeType.REFRESH)
+    @JoinColumn(name="user_id")
+    @JsonIgnore
+    private AppUser user;
+    
+    @NotBlank(message="Project Owner is required")
+    private String projectOwner;
     
     // Backlog
     // When I fetch the project get me the backlog,
@@ -140,5 +150,21 @@ public class Project {
 	public void setEnd_date(Date end_date) {
 		this.end_date = end_date;
 	}
+
+    public AppUser getUser() {
+      return user;
+    }
+
+    public void setUser(AppUser user) {
+      this.user = user;
+    }
+
+    public String getProjectOwner() {
+      return projectOwner;
+    }
+
+    public void setProjectOwner(String projectOwner) {
+      this.projectOwner = projectOwner;
+    }
 
 }

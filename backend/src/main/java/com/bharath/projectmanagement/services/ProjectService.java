@@ -1,13 +1,14 @@
 package com.bharath.projectmanagement.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.bharath.projectmanagement.domain.AppUser;
 import com.bharath.projectmanagement.domain.Backlog;
 import com.bharath.projectmanagement.domain.Project;
 import com.bharath.projectmanagement.exceptions.ProjectIDException;
 import com.bharath.projectmanagement.repositories.BacklogRepository;
 import com.bharath.projectmanagement.repositories.ProjectRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ProjectService {
@@ -17,12 +18,17 @@ public class ProjectService {
     
     @Autowired
     private BacklogRepository backlogRepository;
+
+    @Autowired
+    private AppUserService appUserService;
     
     // Method to save/update a project.
-    public Object saveOrUpdateProject(Project project) {
+    public Object saveOrUpdateProject(Project project, String username) {
     	
     	//Very simple enough for now. No validations here. Will be handled in the controller.
     	try {
+        AppUser user = appUserService.getUserByName(username);
+        project.setUser(user);
     	  project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
     	  
     	  // We need to create a backlog now when creating a project. Remember for save methods
