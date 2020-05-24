@@ -3,6 +3,10 @@ import { Provider } from 'react-redux';
 import ReduxToastr from 'react-redux-toastr'
 import store from './store';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
+import {setJWTTokenOnHeader} from './utils';
+import {SET_CURRENT_USER} from './actions/types';
+
 import './App.scss';
 import './components/Dashboard';
 import Dashboard from './components/Dashboard';
@@ -15,8 +19,28 @@ import UpdateProjectForm from './components/project/UpdateProjectForm';
 import ProjectBoard from './components/ProjectBoard/ProjectBoard';
 import Register from './components/Users/Register';
 import Login from './components/Users/Login';
+import {logoutUser} from './actions/securityActions';
 
 function App() {
+  // Get the user token to login before rendering token.
+  const jwtToken = localStorage.getItem('jwtToken');
+
+  if (jwtToken) {
+    
+    const tokenDecoded =jwt_decode(jwtToken);
+    
+    // Get the current time and compare it with token's expiry time.
+    const currentTime = Date.now() / 1000;
+    if (tokenDecoded.exp < currentTime) {
+      // Logout the user.
+      store.dispatch(logoutUser());
+      window.location.href = "/login";
+    } else {
+      // Successful token.
+      setJWTTokenOnHeader(jwtToken);
+      store.dispatch({type: SET_CURRENT_USER, payload: tokenDecoded});
+    }
+  }
   return (
     <Provider store={store}>
       <Router>
