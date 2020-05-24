@@ -1,6 +1,8 @@
 import axios from 'axios';
-import {toastr} from 'react-redux-toastr';
-import {GET_FORM_ERRORS, RESET_ERRORS} from '././types';
+import { toastr } from 'react-redux-toastr';
+import jwt_decode from 'jwt-decode';
+import { GET_FORM_ERRORS, RESET_ERRORS, SET_CURRENT_USER } from '././types';
+import {setJWTTokenOnHeader} from '../utils';
 export const registerUser = (user, history) => {
   return async (dispatch) => {
     try {
@@ -10,6 +12,39 @@ export const registerUser = (user, history) => {
       */
       toastr.success('Success', `User Created`)
       history.push("/login");
+      
+      // Remove any form errors that were shown to the users.
+      dispatch({type: RESET_ERRORS})
+    } catch (error) {
+      // When you are here it means something went wrong. Lets dispatch an action to hold the errors.
+      dispatch({
+        type: GET_FORM_ERRORS,
+        payload: error.response.data
+      })
+    }
+  }
+}
+
+export const loginUser = (credentials, history) => {
+  return async (dispatch) => {
+    try {
+      const res =await axios.post("http://localhost:8080/api/users/login", credentials);
+      const {token} = res;
+      // Now we need to set this token to the local storage.
+      localStorage.setItem('jwtToken', token);
+
+      // Now we need to set this token on the header.
+      setJWTTokenOnHeader(token);
+
+      // Token Decoded
+      const tokenDecoded = jwt_decode(token);
+
+      // Dispatch to our Security Reducer.
+      dispatch({type: SET_CURRENT_USER, payload: tokenDecoded})
+
+      // Toastr message.
+      toastr.success('Success', `User Logged in`)
+      history.push("/dashboard");
       
       // Remove any form errors that were shown to the users.
       dispatch({type: RESET_ERRORS})

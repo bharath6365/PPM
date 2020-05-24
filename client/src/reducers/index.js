@@ -6,6 +6,7 @@ import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
 import formErrorReducer from './formErrorReducer';
 import projectReducer from './projectReducer';
 import backlogReducer from './backlogReducer';
+import securityReducer from './securityReducer';
 
 export default combineReducers({
   // Form errors.
@@ -13,5 +14,6 @@ export default combineReducers({
   // Project Reducer.
   project: projectReducer,
   backlog: backlogReducer,
-  toastr: toastrReducer
+  security: securityReducer,
+  toastr: toastrReducer,
 })

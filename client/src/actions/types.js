@@ -25,3 +25,5 @@ export const RESET_PROJECT_TASK = 'RESET_PROJECT_TASK';
 
 // User Related
 export const USER_REGISTER = 'USER_REGISTER';
+export const USER_LOGIN = 'USER_LOGIN';
+export const SET_CURRENT_USER = 'SET_CURRENT_USER'
