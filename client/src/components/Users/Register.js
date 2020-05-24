@@ -14,6 +14,14 @@ class Register extends Component {
     };
   }
 
+  // Secures the Route.
+  componentDidMount() {
+    // If user is already logged in. Redirect him back to routes page.
+    if (this.props.validToken) {
+      this.props.history.push('/dashboard');
+    }
+  }
+
   // Handle Form Change
   handleChange = (e) => {
     this.setState({
@@ -114,7 +122,8 @@ class Register extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  errors: state.formErrors
+  errors: state.formErrors,
+  validToken: state.security.validToken
 })
 
 export default connect(mapStateToProps, {

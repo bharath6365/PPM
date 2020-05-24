@@ -67,4 +67,6 @@ export const logoutUser = () => dispatch => {
   dispatch({
     type: RESET_CURRENT_USER
   });
+
+  
 };
