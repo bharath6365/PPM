@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import {connect} from 'react-redux';
+import { Link, withRouter } from 'react-router-dom';
 // Not technically create project. Can also be used to update.
 import { createProject, getProjectByIdentifier, resetProject } from '../../actions/projectActions';
 
@@ -182,8 +183,8 @@ const mapStateToProps = (state) => {
 }
 
 
-export default connect(mapStateToProps, {
+export default withRouter(connect(mapStateToProps, {
   getProjectByIdentifier,
   createProject,
   resetProject
-})(UpdateProjectForm);
+})(UpdateProjectForm));

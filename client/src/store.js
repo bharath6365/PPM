@@ -8,7 +8,9 @@ const INITIAL_STATE = {};
 
 const middleware = [ thunk ];
 
-const store = createStore(
+let store;
+if (window.__REDUX_DEVTOOLS_EXTENSION__) {
+  store = createStore(
   rootReducer,
   INITIAL_STATE,
   compose(
@@ -17,5 +19,15 @@ const store = createStore(
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
 );
+} else {
+  store = createStore(
+  rootReducer,
+  INITIAL_STATE,
+  compose(
+    applyMiddleware(...middleware)
+  )
+);
+}
+
 
 export default store;

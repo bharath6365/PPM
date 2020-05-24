@@ -1,11 +1,11 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import ReduxToastr from 'react-redux-toastr'
+import ReduxToastr from 'react-redux-toastr';
 import store from './store';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
-import {setJWTTokenOnHeader} from './utils';
-import {SET_CURRENT_USER} from './actions/types';
+import { setJWTTokenOnHeader } from './utils';
+import { SET_CURRENT_USER } from './actions/types';
 
 import './App.scss';
 import './components/Dashboard';
@@ -19,26 +19,26 @@ import UpdateProjectForm from './components/project/UpdateProjectForm';
 import ProjectBoard from './components/ProjectBoard/ProjectBoard';
 import Register from './components/Users/Register';
 import Login from './components/Users/Login';
-import {logoutUser} from './actions/securityActions';
+import { logoutUser } from './actions/securityActions';
+import LoggedInHOC from './components/Users/LoggedInHOC';
 
 function App() {
   // Get the user token to login before rendering token.
   const jwtToken = localStorage.getItem('jwtToken');
 
   if (jwtToken) {
-    
-    const tokenDecoded =jwt_decode(jwtToken);
-    
+    const tokenDecoded = jwt_decode(jwtToken);
+
     // Get the current time and compare it with token's expiry time.
     const currentTime = Date.now() / 1000;
     if (tokenDecoded.exp < currentTime) {
       // Logout the user.
       store.dispatch(logoutUser());
-      window.location.href = "/login";
+      window.location.href = '/login';
     } else {
       // Successful token.
       setJWTTokenOnHeader(jwtToken);
-      store.dispatch({type: SET_CURRENT_USER, payload: tokenDecoded});
+      store.dispatch({ type: SET_CURRENT_USER, payload: tokenDecoded });
     }
   }
   return (
@@ -46,27 +46,64 @@ function App() {
       <Router>
         <div className="App">
           <Header />
-          <Route exact path="/dashboard" component={Dashboard} />
-          <Route exact path="/add-project" component={CreateProjectForm} />
-          <Route exact path="/update-project/:identifier" component={UpdateProjectForm} />
-          {/* Id is the project identifier. */}
-          <Route exact path="/project-board/:id" component={ProjectBoard} />
+          {/* Switch makes sure there's only one component rendered per route. */}
+          <Switch>
+            <Route
+              exact
+              path="/dashboard"
+              render={() => (
+                <LoggedInHOC>
+                  <Dashboard />
+                </LoggedInHOC>
+              )}
+            />
+            <Route
+              exact
+              path="/add-project"
+              render={() => (
+                <LoggedInHOC>
+                  <CreateProjectForm />
+                </LoggedInHOC>
+              )}
+            />
+            <Route
+              exact
+              path="/update-project/:identifier"
+              render={() => (
+                <LoggedInHOC>
+                  <UpdateProjectForm />
+                </LoggedInHOC>
+              )}
+            />
+
+            {/* Id is the project identifier. */}
+            <Route
+              exact
+              path="/project-board/:id"
+              render={() => (
+                <LoggedInHOC>
+                  <ProjectBoard />
+                </LoggedInHOC>
+              )}
+            />
+          </Switch>
+
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
         </div>
-          
-          {/* User Notifications */}
-          <ReduxToastr
-            timeOut={4000}
-            newestOnTop={false}
-            preventDuplicates
-            position="top-left"
-            getState={(state) => state.toastr} // This is the default
-            transitionIn="fadeIn"
-            transitionOut="fadeOut"
-            progressBar
-            closeOnToastrClick
-          />
+
+        {/* User Notifications */}
+        <ReduxToastr
+          timeOut={4000}
+          newestOnTop={false}
+          preventDuplicates
+          position="top-left"
+          getState={(state) => state.toastr} // This is the default
+          transitionIn="fadeIn"
+          transitionOut="fadeOut"
+          progressBar
+          closeOnToastrClick
+        />
       </Router>
     </Provider>
   );

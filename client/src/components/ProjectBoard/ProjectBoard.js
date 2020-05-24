@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import AddProjectTaskForm from './ProjectTasks/AddProjectTaskForm';
 import EditProjectTaskForm from './ProjectTasks/EditProjectTaskForm';
@@ -210,11 +210,11 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, {
+export default withRouter(connect(mapStateToProps, {
   addProjectTask,
   getAllTasks,
   getTask,
   updateProjecTask,
   resetProjectTask,
   deleteProjectTask
-})(ProjectBoard);
+})(ProjectBoard));
