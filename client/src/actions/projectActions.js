@@ -19,6 +19,9 @@ export const createProject = (project, history, update=false) => {
       }
       toastr.success('Success', `Project with the name ${project.projectName} has been ${projectAction}`)
       history.push("/dashboard");
+
+      // Remove any form errors that were shown to the users.
+      dispatch({type: RESET_ERRORS})
     } catch (error) {
       // When you are here it means something went wrong. Lets dispatch an action to hold the errors.
       dispatch({

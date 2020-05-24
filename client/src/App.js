@@ -13,6 +13,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import CreateProjectForm from './components/project/CreateProjectForm';
 import UpdateProjectForm from './components/project/UpdateProjectForm';
 import ProjectBoard from './components/ProjectBoard/ProjectBoard';
+import Register from './components/Users/Register';
+import Login from './components/Users/Login';
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
           <Route exact path="/update-project/:identifier" component={UpdateProjectForm} />
           {/* Id is the project identifier. */}
           <Route exact path="/project-board/:id" component={ProjectBoard} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/login" component={Login} />
         </div>
           
           {/* User Notifications */}

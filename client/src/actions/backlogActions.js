@@ -7,7 +7,8 @@ import {
   GET_PROJECT_TASK,
   UPDATE_PROJECT_TASK,
   RESET_PROJECT_TASK,
-  DELETE_PROJECT_TASK
+  DELETE_PROJECT_TASK,
+  RESET_ERRORS
 } from '../actions/types';
 
 /* 
@@ -23,6 +24,9 @@ export const addProjectTask = (backlogId, incomingTask) => {
         type: UPDATE_BACKLOG,
         payload: res.data
       });
+
+      // Remove any form errors that were shown to the users.
+      dispatch({type: RESET_ERRORS})
     } catch (e) {
       dispatch({
         type: GET_FORM_ERRORS,
