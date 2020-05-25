@@ -37,17 +37,18 @@ class UpdateProjectForm extends Component {
   e.preventDefault();
   const {projectName, projectDescription, projectIdentifier, start_date, end_date} = this.state;
   const {createProject, history} = this.props;
-  const newProject = {
+  const updatedProject = {
     projectName,
     projectDescription,
     projectIdentifier,
     start_date,
     end_date,
+    projectOwner: this.props.username,
     // This is required for JPA to not consider as a new project.
     id: this.props.project.id
   }
   // Pass it off to the action
-  createProject(newProject, history, true);
+  createProject(updatedProject, history, true);
  }
  
   
@@ -99,7 +100,7 @@ class UpdateProjectForm extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h5 className="display-4 text-center">Create / Edit Project form</h5>
+              <h5 className="display-4 text-center">Edit Project</h5>
               <hr />
               <form onSubmit={this.handleSubmit}>
                 <div 
@@ -178,7 +179,8 @@ class UpdateProjectForm extends Component {
 const mapStateToProps = (state) => {
   return {
     project: state.project.project,
-    errors: state.formErrors
+    errors: state.formErrors,
+    username: state.security.user.username
   }
 }
 

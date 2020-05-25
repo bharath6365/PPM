@@ -44,7 +44,8 @@ class CreateProjectForm extends Component {
     projectDescription,
     projectIdentifier,
     start_date,
-    end_date
+    end_date,
+    projectOwner: this.props.username
   }
 
   // Pass it off to the action
@@ -60,7 +61,7 @@ class CreateProjectForm extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h5 className="display-4 text-center">Create / Edit Project form</h5>
+              <h5 className="display-4 text-center">Create a Project</h5>
               <hr />
               <form onSubmit={this.handleSubmit}>
                 <div 
@@ -124,14 +125,15 @@ class CreateProjectForm extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    errors: state.formErrors
+    errors: state.formErrors,
+    username: state.security.user.username
   }
 }
 
 // Check the spelling on propTypes.
 CreateProjectForm.propTypes = {
   createProject: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
 }
 
 
