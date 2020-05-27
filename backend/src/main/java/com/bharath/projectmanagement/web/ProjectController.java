@@ -35,7 +35,8 @@ public class ProjectController {
   @PostMapping("")
 //  Post Request to the Root route defined in the Request Mapping.
  // @Valid will help us to print useful information in the case of a bad request body.
-  public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, Principal principal, BindingResult result) {
+ // Binding result must immediately follow the model. WTF.
+  public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result, Principal principal) {
 	  
 	 
 	  if (result.hasErrors()) {
