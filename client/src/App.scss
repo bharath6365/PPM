@@ -230,4 +230,18 @@ select {
   min-height: 90vh;
   background:  #1e1d24;
   color: white;
+
+  &.single {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.pill {
+  background: #460a58;
+  padding: 3px;
+  max-width: 70px;
+  letter-spacing: 0.9px;
+  text-align: center;
 }

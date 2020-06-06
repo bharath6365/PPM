@@ -4,7 +4,16 @@
 */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+import {
+  EuiPanel,
+  EuiKeyPadMenu,
+  EuiKeyPadMenuItem,
+  EuiIcon,
+  EuiTextColor,
+  EuiFlexGroup,
+  EuiFlexItem
+} from '@elastic/eui';
+import { Link } from 'react-router-dom';
 import { deleteProject } from '../../actions/projectActions';
 import { connect } from 'react-redux';
 
@@ -14,42 +23,63 @@ class ProjectItem extends Component {
     const confirmDelete = window.confirm('Do you want to delete this project?');
     if (confirmDelete) {
       this.props.deleteProject(identifier, this.props.history);
-    }   
-  }
+    }
+  };
   render() {
-    const {project} = this.props;
-    const {projectName, projectDescription, projectIdentifier} = project;
+    const { project } = this.props;
+    const { projectName, projectDescription, projectIdentifier } = project;
     const updateProjectRoute = `/update-project/${projectIdentifier}`;
     return (
       <div className="container">
-        <div className="card card-body bg-light mb-3">
-          <div className="row">
-            <div className="col-2">
-              <span className="mx-auto">{projectIdentifier}</span>
-            </div>
-            <div className="col-lg-6 col-md-4 col-8">
-              <h3>{projectName}</h3>
-              <p>{projectDescription}</p>
-            </div>
-            <div className="col-md-4 d-none d-lg-block">
-              <ul className="list-group">
-                <Link to={`/project-board/${projectIdentifier}`}>
-                  <li className="list-group-item board">
-                    <i className="fa fa-flag-checkered pr-1">Project Board </i>
-                  </li>
-                </Link>
-                <Link to={updateProjectRoute}>
-                  <li className="list-group-item update">
-                    <i className="fa fa-edit pr-1">Update Project Info</i>
-                  </li>
-                </Link>
-                <li onClick={() => this.handleDelete(projectIdentifier)} className="list-group-item delete">
-                  <i className="fa fa-minus-circle pr-1">Delete Project</i>
-                </li>
-              </ul>
-            </div>
+        <EuiPanel>
+          <div className="card card-body mb-3" style={{ background: 'black' }}>
+            <EuiFlexGroup direction={'row'}>
+              <EuiFlexItem>
+                <span className="pill">{projectIdentifier}</span>
+              </EuiFlexItem>
+              <EuiFlexItem grow={6}>
+                <h3
+                  style={{
+                    maxWidth: '300px'
+                  }}
+                  className="eui-textTruncate"
+                >
+                  {projectName}
+                </h3>
+                <EuiTextColor color="secondary">
+                  <p
+                    style={{
+                      maxWidth: '300px'
+                    }}
+                    className="eui-textTruncate"
+                  >
+                    {projectDescription}
+                  </p>
+                </EuiTextColor>
+              </EuiFlexItem>
+
+              <EuiFlexItem grow={2}>
+                <EuiKeyPadMenu>
+                  <Link to={`/project-board/${projectIdentifier}`}>
+                    <EuiKeyPadMenuItem label="Board">
+                      <EuiIcon type="dashboardApp" size="l" />
+                    </EuiKeyPadMenuItem>
+                  </Link>
+
+                  <Link to={updateProjectRoute}>
+                    <EuiKeyPadMenuItem label="Update">
+                      <EuiIcon type="pencil" size="l" />
+                    </EuiKeyPadMenuItem>
+                  </Link>
+
+                  <EuiKeyPadMenuItem label="Delete" onClick={() => this.handleDelete(projectIdentifier)}>
+                    <EuiIcon type="trash" size="l" />
+                  </EuiKeyPadMenuItem>
+                </EuiKeyPadMenu>
+              </EuiFlexItem>
+            </EuiFlexGroup>
           </div>
-        </div>
+        </EuiPanel>
       </div>
     );
   }
@@ -57,7 +87,7 @@ class ProjectItem extends Component {
 
 ProjectItem.propTypes = {
   project: PropTypes.object.isRequired
-}
+};
 
 export default connect(null, {
   deleteProject
