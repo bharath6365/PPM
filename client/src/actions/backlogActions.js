@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { toastr } from 'react-redux-toastr';
+import {BACKENDHOST} from '../utils/constants.js';
 import {
   GET_BACKLOG,
   GET_FORM_ERRORS,
@@ -18,7 +19,7 @@ incomingTask is the object passed from the form.
 export const addProjectTask = (backlogId, incomingTask) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post(`http://localhost:8080/api/backlog/${backlogId}`, incomingTask);
+      const res = await axios.post(`${BACKENDHOST}/api/backlog/${backlogId}`, incomingTask);
       toastr.info('Success', 'Task Created');
       dispatch({
         type: UPDATE_BACKLOG,
@@ -38,7 +39,7 @@ export const addProjectTask = (backlogId, incomingTask) => {
 
 export const getAllTasks = (projectIdentifier) => {
   return async (dispatch) => {
-    const res = await axios.get(`http://localhost:8080/api/backlog/${projectIdentifier}`);
+    const res = await axios.get(`${BACKENDHOST}/api/backlog/${projectIdentifier}`);
 
     dispatch({
       type: GET_BACKLOG,
@@ -49,7 +50,7 @@ export const getAllTasks = (projectIdentifier) => {
 
 export const getTask = (projectIdentifier, taskSequence) => {
   return async (dispatch) => {
-    const res = await axios.get(`http://localhost:8080/api/backlog/${projectIdentifier}/${taskSequence}`);
+    const res = await axios.get(`${BACKENDHOST}/api/backlog/${projectIdentifier}/${taskSequence}`);
 
     if (res.status === 200) {
       dispatch({
@@ -63,7 +64,7 @@ export const getTask = (projectIdentifier, taskSequence) => {
 export const updateProjecTask = (backlogId, incomingTask) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post(`http://localhost:8080/api/backlog/${backlogId}`, incomingTask);
+      const res = await axios.post(`${BACKENDHOST}/api/backlog/${backlogId}`, incomingTask);
       toastr.info('Success', 'Task Updated');
       dispatch({
         type: UPDATE_PROJECT_TASK,
@@ -92,7 +93,7 @@ export const resetProjectTask = () => {
 export const deleteProjectTask = (projectIdentifier, taskSequence) => {
   return async(dispatch) => {
     try { 
-      const res = await axios.delete(`http://localhost:8080/api/backlog/${projectIdentifier}/${taskSequence}`);
+      const res = await axios.delete(`${BACKENDHOST}/api/backlog/${projectIdentifier}/${taskSequence}`);
 
     if (res.status === 200) {
       dispatch({

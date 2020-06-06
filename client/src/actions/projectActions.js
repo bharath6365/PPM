@@ -1,5 +1,6 @@
 import axios from "axios";
 import {toastr} from 'react-redux-toastr'
+import {BACKENDHOST} from '../utils/constants.js';
 import {GET_FORM_ERRORS, GET_ALL_PROJECTS, GET_PROJECT, RESET_PROJECT, RESET_ERRORS, DELETE_PROJECT} from "./types";
 
 // When there is a successful project creation redirect to dashboard programatically.
@@ -8,7 +9,7 @@ export const createProject = (project, history, update=false) => {
   const projectAction  = update? 'Updated': 'Created';
   return async (dispatch) => {
     try {
-      const res = axios.post("http://localhost:8080/api/project", project);
+      const res = axios.post(`${BACKENDHOST}/api/project`, project);
       /*
         Based on the way our API is wired up. For the create project call all successful 
         calls will render a 200 response. So we don't need to read the response at all.
@@ -36,7 +37,7 @@ export const createProject = (project, history, update=false) => {
 export const getAllProjects = () => {
   return async (dispatch) => {
     try {
-      const res = await axios.get("http://localhost:8080/api/project/all");
+      const res = await axios.get(`${BACKENDHOST}/api/project/all`);
       dispatch({
         type: GET_ALL_PROJECTS,
         payload: res.data
@@ -50,7 +51,7 @@ export const getAllProjects = () => {
 export const getProjectByIdentifier = (identifier, history) => {
   return async (dispatch) => {
     try {
-      const res = await axios.get(`http://localhost:8080/api/project/${identifier}`);
+      const res = await axios.get(`${BACKENDHOST}/api/project/${identifier}`);
       dispatch({
         type: GET_PROJECT,
         payload: res.data
@@ -77,7 +78,7 @@ export const resetProject = (identifier) => {
 export const deleteProject = (identifier, history) => {
   return async(dispatch) => {
     try {
-      await axios.delete(`http://localhost:8080/api/project/${identifier}`);
+      await axios.delete(`${BACKENDHOST}/api/project/${identifier}`);
       dispatch({
         type: DELETE_PROJECT,
         payload: identifier

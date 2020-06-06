@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { toastr } from 'react-redux-toastr';
 import jwt_decode from 'jwt-decode';
+import { BACKENDHOST } from '../utils/constants.js';
 import { GET_FORM_ERRORS, RESET_ERRORS, SET_CURRENT_USER, RESET_CURRENT_USER } from '././types';
 import { setJWTTokenOnHeader } from '../utils';
 export const registerUser = (user, history) => {
   return async (dispatch) => {
     try {
-      await axios.post('http://localhost:8080/api/users/register', user);
+      await axios.post(`${BACKENDHOST}/api/users/register`, user);
       /*
         Based on the way our API is wired up. For all non 200 status codes. We will dispatch the error.       
       */
@@ -28,7 +29,7 @@ export const registerUser = (user, history) => {
 export const loginUser = (credentials, history) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post('http://localhost:8080/api/users/login', credentials);
+      const res = await axios.post(`${BACKENDHOST}/api/users/login`, credentials);
       const { token } = res.data;
       // Now we need to set this token to the local storage.
       localStorage.setItem('jwtToken', token);
@@ -59,14 +60,11 @@ export const loginUser = (credentials, history) => {
   };
 };
 
-export const logoutUser = () => dispatch => {
-
+export const logoutUser = () => (dispatch) => {
   localStorage.removeItem('jwtToken');
   //Providing false as an option removes the common header from being sent on every request.
   setJWTTokenOnHeader(false);
   dispatch({
     type: RESET_CURRENT_USER
   });
-
-  
 };
