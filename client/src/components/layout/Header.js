@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {logoutUser} from '../../actions/securityActions';
+import Logo from '../../images/logo.png';
 class Header extends Component {
   // Handle Logout
   handleLogout = () => {
@@ -16,7 +17,7 @@ class Header extends Component {
       <nav className="navbar navbar-expand-sm navbar-dark bg-primary">
         <div className="container">
           <a className="navbar-brand" href="Dashboard.html">
-            Personal Project Management Tool
+            Simple Manager
           </a>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobile-nav">
             <span className="navbar-toggler-icon" />
