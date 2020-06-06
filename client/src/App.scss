@@ -88,7 +88,7 @@ select {
   border-radius: 20px !important;
 }
 
-.form-group p {
+.form-container p {
   opacity: 0;
   pointer-events: none;
   color: red;
@@ -96,12 +96,7 @@ select {
   transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
-.form-group.error input,
-.form-group.error textarea {
-  outline: 1px solid red;
-}
-
-.form-group.error p {
+.form-container.error p {
   opacity: 1;
   transform: translateX(0);
   pointer-events: all;
@@ -228,4 +223,11 @@ select {
       
     }
   }
+}
+
+.page-container {
+  padding: 20px;
+  min-height: 90vh;
+  background:  #1e1d24;
+  color: white;
 }

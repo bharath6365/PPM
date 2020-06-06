@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import '@elastic/eui/dist/eui_theme_dark.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 

@@ -25,7 +25,7 @@ export const createProject = (project, history, update=false) => {
       dispatch({type: RESET_ERRORS})
     } catch (error) {
       // When you are here it means something went wrong. Lets dispatch an action to hold the errors.
-      console.log('Error', error.response.data);
+      console.log('Error', error);
       dispatch({
         type: GET_FORM_ERRORS,
         payload: error.response.data
