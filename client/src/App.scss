@@ -90,17 +90,31 @@ select {
 
 .form-container p {
   opacity: 0;
+  margin: 0;
   pointer-events: none;
   color: red;
   transform: translateX(-100px);
   transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
-.form-container.error p {
-  opacity: 1;
-  transform: translateX(0);
-  pointer-events: all;
+.form-group {
+  margin-bottom: 10px;
 }
+
+.form-container.error {
+  p {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+  }
+
+  .form-group {
+    margin-bottom: 4px;
+  }
+  
+}
+
+
 
 .group-heading {
   display: inline-block;

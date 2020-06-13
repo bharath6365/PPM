@@ -37,7 +37,6 @@ class CreateProjectForm extends Component {
 
   */
   onChange = (e) => {
-    console.log('Event is', e);
     // If its not a date.
     if (e.target) {
       this.setState({
@@ -92,7 +91,7 @@ class CreateProjectForm extends Component {
             ${Object.keys(errors).length > 0 ? 'error' : ''}
           `}>
             <EuiForm onSubmit={this.handleSubmit} fullWidth>
-              <div>
+              <div className="form-group">
                 <EuiFieldText
                   fullWidth
                   placeholder="Project Name"
@@ -104,7 +103,7 @@ class CreateProjectForm extends Component {
                 <p>{errors.projectName}</p>
               </div>
 
-              <div>
+              <div className="form-group">
                 <EuiFieldText
                   fullWidth
                   placeholder="Unique Project ID"
@@ -115,7 +114,7 @@ class CreateProjectForm extends Component {
                 />
                 <p>{errors.projectIdentifier}</p>
               </div>
-              <div>
+              <div className="form-group">
                 <EuiTextArea
                   fullWidth
                   placeholder="Project Description"

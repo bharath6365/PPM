@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { EuiFieldText, EuiForm, EuiButton, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 import { connect } from 'react-redux';
-import {registerUser} from '../../actions/securityActions';
+import { registerUser } from '../../actions/securityActions';
 // Make this a controlled component.
 class Register extends Component {
   constructor(props) {
@@ -26,8 +27,8 @@ class Register extends Component {
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value
-    })
-  }
+    });
+  };
 
   // Handle Form Submission
   handleSubmit = (e) => {
@@ -38,84 +39,85 @@ class Register extends Component {
       username: email,
       password,
       confirmPassword
-    }
+    };
 
     this.props.registerUser(newUser, this.props.history);
-  }
+  };
 
   render() {
     const { name, email, password, confirmPassword } = this.state;
-    const {errors} = this.props;
-    const formGroup = "form-group";
+    const { errors } = this.props;
     return (
-      <div className="register">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Sign Up</h1>
-              <p className="lead text-center">Create your Account</p>
-              <form action="create-profile.html" onSubmit={this.handleSubmit}>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    placeholder="Name"
-                    name="name"
-                    required
-                    value={name}
-                    onChange={this.handleChange}
-                  />
-                </div>
-                <div 
-                  className={errors.username ? `error ${formGroup}` : `${formGroup}`} 
-                >
-                  <input
-                    type="email"
-                    className="form-control form-control-lg"
-                    placeholder="Email Address"
-                    name="email"
-                    value={email}
-                    required
-                    onChange={this.handleChange}
-                  />
+      <div className="page-container">
+        <EuiFlexGroup justifyContent="center">
+          <EuiFlexItem grow={4}>
+            <h1 className="display-4">Sign Up</h1>
+            <p className="lead">Free Forever</p>
+          </EuiFlexItem>
 
-                  {errors.username && (
-                    <p>Email already exists.</p>
-                  )} 
-                </div>
-                <div 
-                  className={errors.password ? `error ${formGroup}` : `${formGroup}`} 
-                >
-                  <input
-                    type="password"
-                    className="form-control form-control-lg"
-                    placeholder="Password"
-                    name="password"
-                    value={password}
-                    required
-                    onChange={this.handleChange}
-                  />
-                    <p>{errors.password}</p>
-                </div>
-                <div 
-                  className={errors.confirmPassword ? `error ${formGroup}` : `${formGroup}`} 
-                >
-                  <input
-                    type="password"
-                    className="form-control form-control-lg"
-                    placeholder="Confirm Password"
-                    name="confirmPassword"
-                    value={confirmPassword}
-                    match="password"
-                    onChange={this.handleChange}
-                  />
-                  <p>{errors.confirmPassword}</p> 
-                </div>
-                <input type="submit" className="btn btn-info btn-block mt-4" />
-              </form>
-            </div>
-          </div>
-        </div>
+          <EuiFlexItem
+            grow={8}
+            className={`form-container 
+            ${Object.keys(errors).length > 0 ? 'error' : ''}
+          `}
+          >
+            <EuiForm fullWidth onSubmit={this.handleSubmit}>
+              <div className="form-group">
+                <EuiFieldText
+                  fullWidth
+                  autoFocus
+                  type="text"
+                  placeholder="Name"
+                  name="name"
+                  required
+                  value={name}
+                  onChange={this.handleChange}                
+                />
+                <p>{errors.fullName}</p>
+              </div>
+              <div className="form-group">
+                <EuiFieldText
+                  fullWidth
+                  type="email"
+                  placeholder="Email Address"
+                  name="email"
+                  value={email}
+                  required
+                  onChange={this.handleChange}
+                />
+
+                {errors.username && <p>Email already exists.</p>}
+              </div>
+              <div className="form-group">
+                <EuiFieldText
+                  fullWidth
+                  type="password"
+                  placeholder="Password"
+                  name="password"
+                  value={password}
+                  required
+                  onChange={this.handleChange}
+                />
+                <p>{errors.password}</p>
+              </div>
+              <div className="form-group">
+                <EuiFieldText
+                  fullWidth
+                  type="password"
+                  placeholder="Confirm Password"
+                  name="confirmPassword"
+                  value={confirmPassword}
+                  match="password"
+                  onChange={this.handleChange}
+                />
+                <p>{errors.confirmPassword}</p>
+              </div>
+              <EuiButton fill color="primary" onClick={this.handleSubmit}>
+                Create Account
+              </EuiButton>
+            </EuiForm>
+          </EuiFlexItem>
+        </EuiFlexGroup>
       </div>
     );
   }
@@ -124,8 +126,8 @@ class Register extends Component {
 const mapStateToProps = (state) => ({
   errors: state.formErrors,
   validToken: state.security.validToken
-})
+});
 
 export default connect(mapStateToProps, {
   registerUser
-})(Register)
+})(Register);

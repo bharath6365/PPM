@@ -1,7 +1,27 @@
 import React, { Component } from 'react';
+import {
+  EuiDatePicker,
+  EuiFieldText,
+  EuiSelect,
+  EuiTextArea,
+  EuiForm,
+  EuiButton,
+} from '@elastic/eui';
 import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+
+const taskOptions = [
+  { value: 'TODO', text: 'Todo' },
+  { value: 'INPROGRESS', text: 'In-Progress' },
+  { value: 'DONE', text: 'Done' }
+];
+
+const priorityOptions = [
+  { value: 'HIGH', text: 'High' },
+  { value: 'MEDIUM', text: 'Medium' },
+  { value: 'LOW', text: 'Low' }
+]
 
 export default class AddProjectTaskForm extends Component {
   constructor(props) {
@@ -11,8 +31,8 @@ export default class AddProjectTaskForm extends Component {
       summary: '',
       detailedDescription: '',
       dueDate: null,
-      priority: 'LOW',
-      status: 'TODO'
+      priority: priorityOptions[0].value,
+      status: taskOptions[0].value
     };
   }
 
@@ -20,6 +40,13 @@ export default class AddProjectTaskForm extends Component {
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value
+    });
+  };
+  
+
+  handleDueDate = (date) => {
+    this.setState({
+      dueDate: date
     });
   };
 
@@ -54,73 +81,57 @@ export default class AddProjectTaskForm extends Component {
 
         <Modal.Body>
           <div className="add-PBI">
-            <div className="container">
-              <div className="row">
-                <div className="col-md-12 m-auto">
-                  <form onSubmit={this.handleSubmit}>
-                    <div className={`form-group ${errors.summary ? 'error' : ''}`}>
-                      <input
-                        type="text"
-                        className="form-control form-control-lg"
-                        name="summary"
-                        placeholder="Task Title"
-                        value={summary}
-                        required
-                        onChange={this.handleChange}
-                      />
-                      <p>{errors.summary}</p>
-                    </div>
-                    <div className="form-group">
-                      <textarea
-                        className="form-control form-control-lg"
-                        placeholder="Task Description"
-                        name="detailedDescription"
-                        value={detailedDescription}
-                        onChange={this.handleChange}
-                      />
-                    </div>
-                    <h6>Due Date</h6>
-                    <div className="form-group">
-                      <input
-                        value={dueDate}
-                        type="date"
-                        className="form-control form-control-lg"
-                        name="dueDate"
-                        onChange={this.handleChange}
-                      />
-                    </div>
-                    <h6>Priority</h6>
-                    <div className="form-group">
-                      <select
-                        value={priority}
-                        className="form-control form-control-lg"
-                        name="priority"
-                        onChange={this.handleChange}
-                      >
-                        <option value={'HIGH'}>High</option>
-                        <option value={'MEDIUM'}>Medium</option>
-                        <option value={'LOW'}>Low</option>
-                      </select>
-                    </div>
-
-                    <h6>Status</h6>
-                    <div className="form-group">
-                      <select
-                        value={status}
-                        className="form-control form-control-lg"
-                        name="status"
-                        onChange={this.handleChange}
-                      >
-                        <option value="TODO">Todo</option>
-                        <option value="INPROGRESS">In Progress</option>
-                        <option value="DONE">Done</option>
-                      </select>
-                    </div>
-                    <input type="submit" className="btn btn-primary" value="Submit" />
-                  </form>
-                </div>
+            <EuiForm onSubmit={this.handleSubmit} fullWidth>
+              <div className="form-group">
+                <EuiFieldText
+                  fullWidth
+                  type="text"
+                  name="summary"
+                  placeholder="Task Title"
+                  value={summary}
+                  required
+                  onChange={this.handleChange}
+                />
+                <p>{errors.summary}</p>
               </div>
-            </div>
+              <div className="form-group">
+                <EuiTextArea
+                  fullWidth
+                  placeholder="Task Description"
+                  name="detailedDescription"
+                  value={detailedDescription}
+                  onChange={this.handleChange}
+                />
+              </div>
+              <h6>Due Date</h6>
+              <div className="form-group">
+                <EuiDatePicker fullWidth selected={dueDate} name="dueDate" onChange={this.handleDueDate} />
+              </div>
+              <h6>Priority</h6>
+              <div className="form-group">
+                <EuiSelect
+                  fullWidth
+                  value={priority}
+                  options={priorityOptions}
+                  name="priority"
+                  onChange={e => this.handleChange(e)}
+                />
+              </div>
+
+              <h6>Status</h6>
+              <div className="form-group">
+                <EuiSelect
+                  fullWidth
+                  value={status}
+                  name="status"
+                  options={taskOptions}
+                  onChange={e => this.handleChange(e)}
+                />
+              </div>
+              <EuiButton fill color="primary" onClick={this.handleSubmit}>
+                Submit
+              </EuiButton>
+            </EuiForm>
           </div>
         </Modal.Body>
       </Modal>

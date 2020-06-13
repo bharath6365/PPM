@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
+import {
+  EuiFieldText,
+  EuiForm,
+  EuiButton,
+  EuiFlexGroup,
+  EuiFlexItem
+} from '@elastic/eui';
 import { connect } from 'react-redux';
-import {loginUser} from '../../actions/securityActions';
+import { loginUser } from '../../actions/securityActions';
 // Make this a controlled component.
 class Login extends Component {
   constructor(props) {
@@ -8,10 +15,10 @@ class Login extends Component {
 
     this.state = {
       email: '',
-      password: '',
+      password: ''
     };
   }
-  
+
   // Secures the Route.
   componentDidMount() {
     // If user is already logged in. Redirect him back to routes page.
@@ -24,8 +31,8 @@ class Login extends Component {
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value
-    })
-  }
+    });
+  };
 
   // Handle Form Submission
   handleSubmit = (e) => {
@@ -33,57 +40,59 @@ class Login extends Component {
     const { email, password } = this.state;
     const credentials = {
       username: email,
-      password,
-    }
+      password
+    };
 
     this.props.loginUser(credentials, this.props.history);
-  }
+  };
 
   render() {
-    const {  email, password} = this.state;
-    const {errors} = this.props;
-    const formGroup = "form-group";
+    const { email, password } = this.state;
+    const { errors } = this.props;
     return (
-      <div className="register">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Login</h1>
-              <form action="create-profile.html" onSubmit={this.handleSubmit}>
-                <div 
-                  className={errors.username ? `error ${formGroup}` : `${formGroup}`} 
-                >
-                  <input
-                    type="email"
-                    className="form-control form-control-lg"
-                    placeholder="Email Address"
-                    name="email"
-                    value={email}
-                    required
-                    onChange={this.handleChange}
-                  />
+      <div className="page-container">
+        <EuiFlexGroup justifyContent="center">
+          <EuiFlexItem grow={4}>
+            <h1 className="display-4 text-center">Login</h1>
+          </EuiFlexItem>
 
-                  <p>{errors.username}</p>
-                </div>
-                <div 
-                  className={errors.password ? `error ${formGroup}` : `${formGroup}`} 
-                >
-                  <input
-                    type="password"
-                    className="form-control form-control-lg"
-                    placeholder="Password"
-                    name="password"
-                    value={password}
-                    required
-                    onChange={this.handleChange}
-                  />
-                    <p>{errors.password}</p>
-                </div>
-                <input type="submit" className="btn btn-info btn-block mt-4" />
-              </form>
-            </div>
-          </div>
-        </div>
+          <EuiFlexItem grow={8} 
+          className={`form-container 
+            ${Object.keys(errors).length > 0 ? 'error' : ''}
+          `}>
+            <EuiForm fullWidth onSubmit={this.handleSubmit}>
+              <div className="form-group">
+                <EuiFieldText
+                  fullWidth
+                  autoFocus
+                  placeholder="Email Address"
+                  name="email"
+                  value={email}
+                  required
+                  onChange={this.handleChange}
+                  aria-label="Email Address"
+                />
+
+                <p>{errors.username}</p>
+              </div>
+              <div className="form-group">
+                <EuiFieldText
+                  fullWidth
+                  type="password"
+                  placeholder="Password"
+                  name="password"
+                  value={password}
+                  required
+                  onChange={this.handleChange}
+                />
+                <p>{errors.password}</p>
+              </div>
+              <EuiButton fill color="primary" onClick={this.handleSubmit}>
+                Submit
+              </EuiButton>
+            </EuiForm>
+          </EuiFlexItem>
+        </EuiFlexGroup>
       </div>
     );
   }
@@ -92,8 +101,8 @@ class Login extends Component {
 const mapStateToProps = (state) => ({
   errors: state.formErrors,
   validToken: state.security.validToken
-})
+});
 
 export default connect(mapStateToProps, {
   loginUser
-})(Login)
+})(Login);

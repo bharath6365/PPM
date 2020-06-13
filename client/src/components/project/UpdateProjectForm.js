@@ -125,7 +125,7 @@ class UpdateProjectForm extends Component {
             ${Object.keys(errors).length > 0 ? 'error' : ''}
           `}>
             <EuiForm onSubmit={this.handleSubmit} fullWidth>
-              <div>
+              <div className="form-group">
                 <EuiFieldText
                   fullWidth
                   placeholder="Project Name"
@@ -137,7 +137,7 @@ class UpdateProjectForm extends Component {
                 <p>{errors.projectName}</p>
               </div>
 
-              <div>
+              <div className="form-group">
                 <EuiFieldText
                   fullWidth
                   readOnly
@@ -149,7 +149,7 @@ class UpdateProjectForm extends Component {
                 />
                 <p>{errors.projectIdentifier}</p>
               </div>
-              <div>
+              <div className="form-group">
                 <EuiTextArea
                   fullWidth
                   placeholder="Project Description"
