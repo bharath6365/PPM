@@ -21,6 +21,7 @@ import Register from './components/Users/Register';
 import Login from './components/Users/Login';
 import { logoutUser } from './actions/securityActions';
 import LoggedInHOC from './components/Users/LoggedInHOC';
+import Home from './components/Home';
 
 function App() {
   // Get the user token to login before rendering token.
@@ -87,7 +88,8 @@ function App() {
               )}
             />
           </Switch>
-
+          
+          <Route exact path="/" component={Home} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
         </div>

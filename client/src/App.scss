@@ -14,6 +14,10 @@
   --low: #4acd4a;
 }
 
+body {
+  color: white;
+}
+
 img {
   width: 100%;
 }
@@ -258,4 +262,31 @@ select {
   max-width: 70px;
   letter-spacing: 0.9px;
   text-align: center;
+}
+
+
+// Home Page styles
+.home-wrapper {
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0, 0.7),
+    rgba(0,0,0, 0.4)
+  ),url(./images/task-manager.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  // Nav Height. TODO Change this to a dynamic value.
+  height: 93vh;
+  overflow: hidden;
+  color: white;
+
+
+  .banner-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    max-width: 70vw;
+  }
+  
 }

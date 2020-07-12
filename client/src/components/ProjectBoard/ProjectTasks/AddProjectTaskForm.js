@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import {
   EuiDatePicker,
   EuiFieldText,
@@ -6,6 +6,14 @@ import {
   EuiTextArea,
   EuiForm,
   EuiButton,
+  EuiModal,
+  EuiFormRow,
+  EuiModalBody,
+  EuiModalFooter,
+  EuiButtonEmpty,
+  EuiOverlayMask,
+  EuiModalHeader,
+  EuiModalHeaderTitle
 } from '@elastic/eui';
 import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
@@ -21,7 +29,7 @@ const priorityOptions = [
   { value: 'HIGH', text: 'High' },
   { value: 'MEDIUM', text: 'Medium' },
   { value: 'LOW', text: 'Low' }
-]
+];
 
 export default class AddProjectTaskForm extends Component {
   constructor(props) {
@@ -32,9 +40,10 @@ export default class AddProjectTaskForm extends Component {
       detailedDescription: '',
       dueDate: null,
       priority: priorityOptions[0].value,
-      status: taskOptions[0].value
+      status: taskOptions[0].value,
     };
   }
+
 
   // Responds to input change and updates the state.
   handleChange = (e) => {
@@ -42,12 +51,15 @@ export default class AddProjectTaskForm extends Component {
       [e.target.name]: e.target.value
     });
   };
-  
 
   handleDueDate = (date) => {
     this.setState({
       dueDate: date
     });
+  };
+
+  closeModal = () => {
+    this.props.closeModal();
   };
 
   /*
@@ -69,72 +81,90 @@ export default class AddProjectTaskForm extends Component {
     this.props.formSuccess(newTask);
   };
 
-  render() {
-    const { errors } = this.props;
-    const { visibility } = this.props;
+  renderModal = () => {
+    let modal;
+    const { errors, visibility } = this.props;
     const { summary, detailedDescription, dueDate, priority, status } = this.state;
-    return (
-      <Modal show={visibility} onHide={this.props.handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add a Task</Modal.Title>
-        </Modal.Header>
+    if (visibility) {
+      modal = (
+        <EuiOverlayMask onClick={this.closeModal}>
+          <EuiModal onClose={this.closeModal} initialFocus="[name=popswitch]">
+            <EuiModalHeader>
+              <EuiModalHeaderTitle>Add a Task</EuiModalHeaderTitle>
+            </EuiModalHeader>
 
-        <Modal.Body>
-          <div className="add-PBI">
-            <EuiForm onSubmit={this.handleSubmit} fullWidth>
-              <div className="form-group">
-                <EuiFieldText
-                  fullWidth
-                  type="text"
-                  name="summary"
-                  placeholder="Task Title"
-                  value={summary}
-                  required
-                  onChange={this.handleChange}
-                />
-                <p>{errors.summary}</p>
-              </div>
-              <div className="form-group">
-                <EuiTextArea
-                  fullWidth
-                  placeholder="Task Description"
-                  name="detailedDescription"
-                  value={detailedDescription}
-                  onChange={this.handleChange}
-                />
-              </div>
-              <h6>Due Date</h6>
-              <div className="form-group">
-                <EuiDatePicker fullWidth selected={dueDate} name="dueDate" onChange={this.handleDueDate} />
-              </div>
-              <h6>Priority</h6>
-              <div className="form-group">
-                <EuiSelect
-                  fullWidth
-                  value={priority}
-                  options={priorityOptions}
-                  name="priority"
-                  onChange={e => this.handleChange(e)}
-                />
-              </div>
+            <EuiModalBody>
+              <div className="add-PBI">
+                <EuiForm onSubmit={this.handleSubmit} fullWidth>
+                  <div className="form-group">
+                    <EuiFieldText
+                      fullWidth
+                      type="text"
+                      name="summary"
+                      placeholder="Task Title"
+                      value={summary}
+                      required
+                      onChange={this.handleChange}
+                    />
+                    <p>{errors.summary}</p>
+                  </div>
+                  <div className="form-group">
+                    <EuiTextArea
+                      fullWidth
+                      placeholder="Task Description"
+                      name="detailedDescription"
+                      value={detailedDescription}
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                  <EuiFormRow fullWidth label="Start Date">
+                    <EuiDatePicker fullWidth selected={dueDate} name="dueDate" onChange={this.handleDueDate} />
+                  </EuiFormRow>
+                  <EuiFormRow fullWidth label="Priority">
+                    <EuiSelect
+                      fullWidth
+                      value={priority}
+                      options={priorityOptions}
+                      name="priority"
+                      onChange={(e) => this.handleChange(e)}
+                    />
+                  </EuiFormRow>
 
-              <h6>Status</h6>
-              <div className="form-group">
-                <EuiSelect
-                  fullWidth
-                  value={status}
-                  name="status"
-                  options={taskOptions}
-                  onChange={e => this.handleChange(e)}
-                />
+                  <EuiFormRow fullWidth label="Status">
+                    <EuiSelect
+                      fullWidth
+                      value={status}
+                      name="status"
+                      options={taskOptions}
+                      onChange={(e) => this.handleChange(e)}
+                    />
+                  </EuiFormRow>
+                </EuiForm>
               </div>
-              <EuiButton fill color="primary" onClick={this.handleSubmit}>
-                Submit
+            </EuiModalBody>
+
+            <EuiModalFooter>
+              <EuiButtonEmpty onClick={this.closeModal}>Cancel</EuiButtonEmpty>
+
+              <EuiButton onClick={this.handleSubmit} fill>
+                Save
               </EuiButton>
-            </EuiForm>
-          </div>
-        </Modal.Body>
-      </Modal>
+            </EuiModalFooter>
+          </EuiModal>
+        </EuiOverlayMask>
+      );
+    } else {
+      modal = <Fragment />;
+    }
+
+    return (
+      <div>
+        {modal}
+      </div>
     );
+  };
+
+  render() {
+    return this.renderModal();
   }
 }

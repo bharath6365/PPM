@@ -43,13 +43,18 @@ class ProjectBoard extends PureComponent {
 
   // Reusing the same function for create, update modal.
   handleCreateProjectModalCancel = () => {
+    
+
+    this.props.resetProjectTask();
+  };
+
+  // Will Close all Modals
+  handleModalClose = () => {
     this.setState({
       createProjectModalVisibility: false,
       updateProjectModalVisibility: false
     });
-
-    this.props.resetProjectTask();
-  };
+  }
 
   // Pass on the incoming task to the action.
   handleCreateTaskFormSuccess = (incomingTask) => {
@@ -60,7 +65,7 @@ class ProjectBoard extends PureComponent {
       this.setState({
         createProjectModalVisibility: false
       });
-    });
+    })
   };
 
   /**
@@ -207,6 +212,7 @@ class ProjectBoard extends PureComponent {
           handleClose={this.handleCreateProjectModalCancel}
           formSuccess={this.handleCreateTaskFormSuccess}
           errors={errors}
+          closeModal={this.handleModalClose}
         />
 
         {/* Update Task Modal */}

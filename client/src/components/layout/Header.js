@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {logoutUser} from '../../actions/securityActions';
+import { logoutUser } from '../../actions/securityActions';
+import { EuiHeader, EuiHeaderSectionItem, EuiHeaderLogo, EuiHeaderLinks, EuiHeaderLink } from '@elastic/eui';
 import Logo from '../../images/logo.png';
 class Header extends Component {
   // Handle Logout
@@ -9,52 +10,89 @@ class Header extends Component {
     this.props.logoutUser();
     // TODO: Change this to react router config.
     window.location.href = '/login';
-  }
+  };
   render() {
     const { user } = this.props;
     const isUserAvailable = Object.keys(user).length > 0 ? true : false;
     return (
-      <nav className="navbar navbar-expand-sm navbar-dark bg-primary">
-        <div className="container">
-          <a className="navbar-brand" href="Dashboard.html">
-            Simple Manager
-          </a>
-          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobile-nav">
-            <span className="navbar-toggler-icon" />
-          </button>
+      <EuiHeader>
+        <EuiHeaderSectionItem border="right">
+          <EuiHeaderLogo href="#">TaskComplete</EuiHeaderLogo>
+        </EuiHeaderSectionItem>
 
-          <div className="collapse navbar-collapse" id="mobile-nav">
+        <EuiHeaderSectionItem>
+          <EuiHeaderLinks aria-label="Dashboard">
             {isUserAvailable && (
-              <ul className="navbar-nav ml-auto">
-                <li className="nav-item">
-                  <Link to="/dashboard" className="nav-link">
+              <Fragment>
+                <EuiHeaderLink>
+                  <Link to="/dashboard">
                     Dashboard
                   </Link>
-                </li>
+                </EuiHeaderLink>
 
-                <li style={{cursor: 'pointer'}} className="nav-item" onClick={this.handleLogout}>
-                  <span className="nav-link">Logout</span>
-                </li>
-              </ul>
+                <EuiHeaderLink onClick={this.handleLogout}>Logout</EuiHeaderLink>
+              </Fragment>
             )}
 
             {!isUserAvailable && (
-              <ul className="navbar-nav ml-auto">
-                <li className="nav-item">
-                  <Link to="/register" className="nav-link">
+              <Fragment>
+                <EuiHeaderLink>
+                  <Link to="/register">
                     Signup
                   </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/login" className="nav-link">
+                </EuiHeaderLink>
+
+                <EuiHeaderLink>
+                  <Link to="/login">
                     Login
                   </Link>
-                </li>
-              </ul>
+                </EuiHeaderLink>
+              </Fragment>
             )}
-          </div>
-        </div>
-      </nav>
+          </EuiHeaderLinks>
+        </EuiHeaderSectionItem>
+      </EuiHeader>
+      // <nav className="navbar navbar-expand-sm navbar-dark bg-primary">
+      //   <div className="container">
+      //     <a className="navbar-brand" href="Dashboard.html">
+      //       Simple Manager
+      //     </a>
+      //     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobile-nav">
+      //       <span className="navbar-toggler-icon" />
+      //     </button>
+
+      //     <div className="collapse navbar-collapse" id="mobile-nav">
+      //       {isUserAvailable && (
+      //         <ul className="navbar-nav ml-auto">
+      //           <li className="nav-item">
+      //             <Link to="/dashboard" className="nav-link">
+      //               Dashboard
+      //             </Link>
+      //           </li>
+
+      //           <li style={{cursor: 'pointer'}} className="nav-item" onClick={this.handleLogout}>
+      //             <span className="nav-link">Logout</span>
+      //           </li>
+      //         </ul>
+      //       )}
+
+      //       {!isUserAvailable && (
+      //         <ul className="navbar-nav ml-auto">
+      //           <li className="nav-item">
+      //             <Link to="/register" className="nav-link">
+      //               Signup
+      //             </Link>
+      //           </li>
+      //           <li className="nav-item">
+      //             <Link to="/login" className="nav-link">
+      //               Login
+      //             </Link>
+      //           </li>
+      //         </ul>
+      //       )}
+      //     </div>
+      //   </div>
+      // </nav>
     );
   }
 }
