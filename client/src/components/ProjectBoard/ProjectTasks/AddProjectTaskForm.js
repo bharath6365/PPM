@@ -15,15 +15,13 @@ import {
   EuiModalHeader,
   EuiModalHeaderTitle
 } from '@elastic/eui';
-import { connect } from 'react-redux';
-import { Modal, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 
 const taskOptions = [
   { value: 'TODO', text: 'Todo' },
   { value: 'INPROGRESS', text: 'In-Progress' },
   { value: 'DONE', text: 'Done' }
 ];
+
 
 const priorityOptions = [
   { value: 'HIGH', text: 'High' },
