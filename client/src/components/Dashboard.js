@@ -3,12 +3,17 @@
 */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import {withRouter} from 'react-router-dom';
 import Proptypes from 'prop-types';
 import ProjectItem from './project/ProjectItem';
-import CreateProjectButton from './project/CreateProjectButton';
 import { getAllProjects } from '../actions/projectActions';
+import SectionHeader from './common/section-header';
 
 class Dashboard extends Component {
+
+  handleCreateProjectButtonClick = () => {
+    this.props.history.push('/add-project');
+  }
   componentDidMount() {
     // When component mounts we need to dispatch the Get All functions function.
     this.props.getAllProjects();
@@ -17,17 +22,16 @@ class Dashboard extends Component {
     const { project } = this.props;
     return (
       <div className="page-container">
-        <h1 className="display-4 text-center">Projects</h1>
-        <hr />
-        <CreateProjectButton />
-        <br />
-        {project.projects.map((project) => {
+        <SectionHeader heading="Add Project" handleClick={this.handleCreateProjectButtonClick} />
+        
+        <div className="container">
+          {project.projects.map((project) => {
           return (
-            <div className="col-md-12">
-              <ProjectItem project={project} />
-            </div>
+            <ProjectItem project={project} />
           );
-        })}
+          })}
+        </div>
+        
       </div>
     );
   }
@@ -44,4 +48,4 @@ Dashboard.propTypes = {
 
 export default connect(mapStateToProps, {
   getAllProjects
-})(Dashboard);
+})(withRouter(Dashboard));

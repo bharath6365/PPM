@@ -30,9 +30,8 @@ class ProjectItem extends Component {
     const { projectName, projectDescription, projectIdentifier } = project;
     const updateProjectRoute = `/update-project/${projectIdentifier}`;
     return (
-      <div className="container">
-        <EuiPanel>
-          <div className="card card-body mb-3" style={{ background: 'black' }}>
+        <EuiPanel className="mb-4">
+          <div className="card card-body" style={{ background: 'black' }}>
             <EuiFlexGroup direction={'row'}>
               <EuiFlexItem>
                 <span className="pill">{projectIdentifier}</span>
@@ -80,7 +79,6 @@ class ProjectItem extends Component {
             </EuiFlexGroup>
           </div>
         </EuiPanel>
-      </div>
     );
   }
 }
