@@ -6,7 +6,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { EuiCallOut, EuiLink } from '@elastic/eui';
 
 import AddProjectTaskForm from './ProjectTasks/AddProjectTaskForm';
-import EditProjectTaskForm from './ProjectTasks/EditProjectTaskForm';
+import UpdateProjectTaskForm from './ProjectTasks/UpdateProjectTaskForm';
 import ProjectTask from './ProjectTasks/ProjectTask';
 import {
   addProjectTask,
@@ -44,8 +44,6 @@ class ProjectBoard extends PureComponent {
 
   // Reusing the same function for create, update modal.
   handleCreateProjectModalCancel = () => {
-    
-
     this.props.resetProjectTask();
   };
 
@@ -55,6 +53,7 @@ class ProjectBoard extends PureComponent {
       createProjectModalVisibility: false,
       updateProjectModalVisibility: false
     });
+    this.props.resetProjectTask();
   }
 
   // Pass on the incoming task to the action.
@@ -62,10 +61,7 @@ class ProjectBoard extends PureComponent {
     // Get the backlog id from the URL
     const { id: backlogId } = this.props.match.params;
     this.props.addProjectTask(backlogId, incomingTask).then(() => {
-      // Hide the create modal.
-      this.setState({
-        createProjectModalVisibility: false
-      });
+    this.handleModalClose();
     })
   };
 
@@ -74,10 +70,15 @@ class ProjectBoard extends PureComponent {
    */
   // Trigger the visibility of the update modal.
   handleUpdateProjectClick = (projectIdentifier, taskSequence) => {
-    this.props.getTask(projectIdentifier, taskSequence);
-    this.setState({
-      updateProjectModalVisibility: true
-    });
+    this.props.getTask(projectIdentifier, taskSequence).then(() => {
+      this.setState({
+        updateProjectModalVisibility: true
+      });
+    }).catch(() => {
+      alert('Error while fetching the task information');
+    })
+    
+    this.handleModalClose();
   };
 
   handleUpdateTaskFormSuccess = (incomingTask) => {
@@ -131,7 +132,7 @@ class ProjectBoard extends PureComponent {
 
     return (
       <div className="project-board-container page-container">
-        <SectionHeader heading="Add a task" handleClick={this.handleCreateProjectClick} />
+        <SectionHeader heading="Tasks" buttonHeading="Add a task" handleClick={this.handleCreateProjectClick} />
 
         {emptyTask && this.renderEmptyTasks()}
 
@@ -194,11 +195,13 @@ class ProjectBoard extends PureComponent {
         />
 
         {/* Update Task Modal */}
-        <EditProjectTaskForm
+        <UpdateProjectTaskForm
           visibility={this.state.updateProjectModalVisibility}
           handleClose={this.handleCreateProjectModalCancel}
           formSuccess={this.handleUpdateTaskFormSuccess}
           currentTask={this.props.currentTask || {}}
+          errors={errors}
+          closeModal={this.handleModalClose}
         />
       </div>
     );

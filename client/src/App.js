@@ -1,6 +1,10 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import ReduxToastr from 'react-redux-toastr';
+import JavascriptTimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en';
+
+
 import store from './store';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
@@ -22,6 +26,9 @@ import Login from './components/Users/Login';
 import { logoutUser } from './actions/securityActions';
 import LoggedInHOC from './components/Users/LoggedInHOC';
 import Home from './components/Home';
+
+
+JavascriptTimeAgo.addLocale(en);
 
 function App() {
   // Get the user token to login before rendering token.

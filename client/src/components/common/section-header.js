@@ -1,11 +1,11 @@
 import React from 'react'
 
-export default function SectionHeader({heading, handleClick}) {
+export default function SectionHeader({heading, buttonHeading, handleClick}) {
   return (
     <div className="section-header">
-        <h2>Tasks</h2>
+        <h2>{heading}</h2>
         <button onClick={handleClick} className="create-button float-right">
-        <span className="text">{heading}</span>
+        <span className="text">{buttonHeading}</span>
           <svg
             class="bi bi-plus"
             width="1em"

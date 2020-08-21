@@ -22,7 +22,7 @@ class Dashboard extends Component {
     const { project } = this.props;
     return (
       <div className="page-container">
-        <SectionHeader heading="Add Project" handleClick={this.handleCreateProjectButtonClick} />
+        <SectionHeader heading="Projects" buttonHeading="Add Project" handleClick={this.handleCreateProjectButtonClick} />
         
         <div className="container">
           {project.projects.map((project) => {

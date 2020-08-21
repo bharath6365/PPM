@@ -8,7 +8,7 @@
 :root {
   --todo: tomato;
   --inprogress: #512e71;
-  --done: #ffd81a;
+  --done: #3d9c2e;
   --high: red;
   --medium: #a8761a;
   --low: #4acd4a;
@@ -300,4 +300,21 @@ select {
   display: flex;
   justify-content: space-between;
   margin-bottom:  30px;
+}
+
+.button-wrapper {
+  margin: auto;
+  justify-content: center;
+  margin-top: 20px;
+
+  > div {
+    margin-right: 15px !important;
+  }
+}
+
+.due-date {
+  font-size: 0.75rem;
+  background: #7100ff;
+  padding: 2px 5px;
+  border-radius: 2px;
 }

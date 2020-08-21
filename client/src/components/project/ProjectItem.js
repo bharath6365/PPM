@@ -71,7 +71,7 @@ class ProjectItem extends Component {
                     </EuiKeyPadMenuItem>
                   </Link>
 
-                  <EuiKeyPadMenuItem label="Delete" onClick={() => this.handleDelete(projectIdentifier)}>
+                  <EuiKeyPadMenuItem label="Delete" onClick={(e) => this.handleDelete( projectIdentifier)}>
                     <EuiIcon type="trash" size="l" />
                   </EuiKeyPadMenuItem>
                 </EuiKeyPadMenu>

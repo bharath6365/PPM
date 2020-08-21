@@ -15,7 +15,7 @@ class LoggedInHOC extends Component {
       );
     } else {
       return (
-        <Redirect to="/login" />
+        <Redirect to="/" />
       )
     }
   }

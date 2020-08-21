@@ -36,7 +36,7 @@ export default function(state = INITIAL_STATE, action) {
 
       return {
         ...state,
-        projectTasks: [ ...allTasksWithoutIncomingTask, action.payload ],
+        projectTasks: [ action.payload,...allTasksWithoutIncomingTask  ],
         projectTask: {}
       };
 

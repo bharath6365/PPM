@@ -64,7 +64,7 @@ export const getTask = (projectIdentifier, taskSequence) => {
 export const updateProjecTask = (backlogId, incomingTask) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post(`${BACKENDHOST}/api/backlog/${backlogId}`, incomingTask);
+      const res = await axios.patch(`${BACKENDHOST}/api/backlog/${backlogId}`, incomingTask);
       toastr.info('Success', 'Task Updated');
       dispatch({
         type: UPDATE_PROJECT_TASK,
