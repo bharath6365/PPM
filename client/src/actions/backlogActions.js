@@ -33,6 +33,8 @@ export const addProjectTask = (backlogId, incomingTask) => {
         type: GET_FORM_ERRORS,
         payload: e.response.data
       });
+
+      return 'ERROR';
     }
   };
 };
@@ -77,6 +79,8 @@ export const updateProjecTask = (backlogId, incomingTask) => {
         type: GET_FORM_ERRORS,
         payload: e.response.data
       });
+
+      return 'ERROR';
     }
   };
 };

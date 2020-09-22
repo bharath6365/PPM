@@ -9,6 +9,7 @@ import {
 
 const INITIAL_STATE = {
   projectTasks: [],
+  tasksLoading: true,
   // The current project task user is viewing.
   projectTask: {}
 };
@@ -19,7 +20,8 @@ export default function(state = INITIAL_STATE, action) {
     case GET_BACKLOG:
       return {
         ...state,
-        projectTasks: action.payload
+        projectTasks: action.payload,
+        tasksLoading: false
       };
 
     case UPDATE_BACKLOG:

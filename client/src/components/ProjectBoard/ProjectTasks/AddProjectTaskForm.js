@@ -29,16 +29,21 @@ const priorityOptions = [
   { value: 'LOW', text: 'Low' }
 ];
 
+const INITIAL_STATE = {
+  summary: '',
+  detailedDescription: '',
+  dueDate: null,
+  priority: priorityOptions[0].value,
+  status: taskOptions[0].value,
+  buttonLoading: false
+}
 export default class AddProjectTaskForm extends Component {
   constructor(props) {
     super(props);
+    
 
     this.state = {
-      summary: '',
-      detailedDescription: '',
-      dueDate: null,
-      priority: priorityOptions[0].value,
-      status: taskOptions[0].value,
+      ...INITIAL_STATE
     };
   }
 
@@ -67,6 +72,7 @@ export default class AddProjectTaskForm extends Component {
   */
   handleSubmit = (e) => {
     e.preventDefault();
+    this.setState({buttonLoading: true});
     const { summary, detailedDescription, dueDate, priority, status } = this.state;
     const newTask = {
       summary,
@@ -76,7 +82,9 @@ export default class AddProjectTaskForm extends Component {
       status
     };
 
-    this.props.formSuccess(newTask);
+    this.props.formSuccess(newTask).finally(() => {
+    this.setState({...INITIAL_STATE});
+    });
   };
 
   renderModal = () => {
@@ -92,7 +100,9 @@ export default class AddProjectTaskForm extends Component {
             </EuiModalHeader>
 
             <EuiModalBody>
-              <div className="add-PBI">
+              <div className={`form-container 
+                ${Object.keys(errors).length > 0 ? 'error' : ''}
+              `}>
                 <EuiForm onSubmit={this.handleSubmit} fullWidth>
                   <div className="form-group">
                     <EuiFieldText
@@ -115,6 +125,17 @@ export default class AddProjectTaskForm extends Component {
                       onChange={this.handleChange}
                     />
                   </div>
+
+                  <EuiFormRow fullWidth label="Status">
+                    <EuiSelect
+                      fullWidth
+                      value={status}
+                      name="status"
+                      options={taskOptions}
+                      onChange={(e) => this.handleChange(e)}
+                    />
+                  </EuiFormRow>
+                  
                   <EuiFormRow fullWidth label="Due Date">
                     <EuiDatePicker fullWidth selected={dueDate} name="dueDate" onChange={this.handleDueDate} />
                   </EuiFormRow>
@@ -128,15 +149,6 @@ export default class AddProjectTaskForm extends Component {
                     />
                   </EuiFormRow>
 
-                  <EuiFormRow fullWidth label="Status">
-                    <EuiSelect
-                      fullWidth
-                      value={status}
-                      name="status"
-                      options={taskOptions}
-                      onChange={(e) => this.handleChange(e)}
-                    />
-                  </EuiFormRow>
                 </EuiForm>
               </div>
             </EuiModalBody>
@@ -144,7 +156,7 @@ export default class AddProjectTaskForm extends Component {
             <EuiModalFooter>
               <EuiButtonEmpty onClick={this.closeModal}>Cancel</EuiButtonEmpty>
 
-              <EuiButton onClick={this.handleSubmit} fill>
+              <EuiButton isLoading={this.state.buttonLoading} onClick={this.handleSubmit} fill>
                 Save
               </EuiButton>
             </EuiModalFooter>

@@ -16,19 +16,20 @@ class Header extends Component {
     const isUserAvailable = Object.keys(user).length > 0 ? true : false;
     return (
       <EuiHeader>
-        <EuiHeaderSectionItem border="right">
-          <EuiHeaderLogo href="#">TaskComplete</EuiHeaderLogo>
-        </EuiHeaderSectionItem>
+        <Link to="/dashboard">
+          <EuiHeaderSectionItem border="right">
+            <EuiHeaderLogo href="#">TaskComplete</EuiHeaderLogo>
+          </EuiHeaderSectionItem>
+        </Link>
+        
 
         <EuiHeaderSectionItem>
           <EuiHeaderLinks aria-label="Dashboard">
             {isUserAvailable && (
               <Fragment>
-                <EuiHeaderLink>
-                  <Link to="/dashboard">
-                    Dashboard
-                  </Link>
-                </EuiHeaderLink>
+                <Link to="/dashboard">
+                  <EuiHeaderLink>Dashboard</EuiHeaderLink>
+                </Link>
 
                 <EuiHeaderLink onClick={this.handleLogout}>Logout</EuiHeaderLink>
               </Fragment>
@@ -36,63 +37,18 @@ class Header extends Component {
 
             {!isUserAvailable && (
               <Fragment>
-                <EuiHeaderLink>
-                  <Link to="/register">
-                    Signup
-                  </Link>
-                </EuiHeaderLink>
+                <Link to="/register">
+                  <EuiHeaderLink>Signup</EuiHeaderLink>
+                </Link>
 
-                <EuiHeaderLink>
-                  <Link to="/login">
-                    Login
-                  </Link>
-                </EuiHeaderLink>
+                <Link to="/login">
+                  <EuiHeaderLink>Login</EuiHeaderLink>
+                </Link>
               </Fragment>
             )}
           </EuiHeaderLinks>
         </EuiHeaderSectionItem>
       </EuiHeader>
-      // <nav className="navbar navbar-expand-sm navbar-dark bg-primary">
-      //   <div className="container">
-      //     <a className="navbar-brand" href="Dashboard.html">
-      //       Simple Manager
-      //     </a>
-      //     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobile-nav">
-      //       <span className="navbar-toggler-icon" />
-      //     </button>
-
-      //     <div className="collapse navbar-collapse" id="mobile-nav">
-      //       {isUserAvailable && (
-      //         <ul className="navbar-nav ml-auto">
-      //           <li className="nav-item">
-      //             <Link to="/dashboard" className="nav-link">
-      //               Dashboard
-      //             </Link>
-      //           </li>
-
-      //           <li style={{cursor: 'pointer'}} className="nav-item" onClick={this.handleLogout}>
-      //             <span className="nav-link">Logout</span>
-      //           </li>
-      //         </ul>
-      //       )}
-
-      //       {!isUserAvailable && (
-      //         <ul className="navbar-nav ml-auto">
-      //           <li className="nav-item">
-      //             <Link to="/register" className="nav-link">
-      //               Signup
-      //             </Link>
-      //           </li>
-      //           <li className="nav-item">
-      //             <Link to="/login" className="nav-link">
-      //               Login
-      //             </Link>
-      //           </li>
-      //         </ul>
-      //       )}
-      //     </div>
-      //   </div>
-      // </nav>
     );
   }
 }

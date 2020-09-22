@@ -10,7 +10,7 @@ export default function (state=INITIAL_STATE, action) {
       return action.payload
 
     case RESET_ERRORS:
-      return state;
+      return INITIAL_STATE;
 
     default: 
     return state;

@@ -16,9 +16,8 @@
 
 body {
   color: white;
-  background:  #1e1d24 !important;
+  background-color: black !important;
 }
-
 img {
   width: 100%;
 }
@@ -106,6 +105,16 @@ select {
   margin-bottom: 10px;
 }
 
+.form-text-container {
+  position: relative;
+
+  .euiPopover {
+    position: absolute;
+    right: 0;
+    
+  }
+}
+
 .form-container.error {
   p {
     opacity: 1;
@@ -130,7 +139,6 @@ select {
   border-radius: 3px;
 }
 .project-board-container {
-  background: #1f282e;
   padding: 20px 10px;
   min-height: 100vh;
 }
@@ -245,7 +253,6 @@ select {
 .page-container {
   padding: 20px;
   min-height: 90vh;
-  background:  #1e1d24;
   color: white;
   max-width: 80vw;
   margin: auto;
@@ -317,4 +324,9 @@ select {
   background: #7100ff;
   padding: 2px 5px;
   border-radius: 2px;
+}
+
+// Pill
+.pill {
+  min-width: 100px;
 }

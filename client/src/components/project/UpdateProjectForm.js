@@ -16,6 +16,7 @@ import moment from 'moment';
 import { Link, withRouter } from 'react-router-dom';
 // Not technically create project. Can also be used to update.
 import { createProject, getProjectByIdentifier, resetProject } from '../../actions/projectActions';
+import PageLoader from '../common/page-loader';
 
 class UpdateProjectForm extends Component {
 
@@ -185,15 +186,13 @@ class UpdateProjectForm extends Component {
   }
 
   render() {
-    // This is set only when project is fetched from the API
+    // This is set only when project is fetched from the backend.
     if (this.state.projectIdentifier.length > 0) {
       return this.renderForm();
     }
-    // Todo: Add a common loader for our entire project.
+
     return (
-      <div className="page-container single">
-        <EuiLoadingChart size="xl" />
-      </div>
+      <PageLoader />
     )
   }
 }

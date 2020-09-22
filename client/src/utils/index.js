@@ -7,5 +7,15 @@ const setJWTTokenOnHeader = (token) => {
   }
 }
 
+const checkFormErrors = (nextProps, callback) => {
+  try {
+    if (Object.keys(nextProps.errors).length > 0 ) {
+      callback();
+  }
+  } catch(e) {
+    console.error(e);
+  }
+}
 
-export {setJWTTokenOnHeader}
+
+export {setJWTTokenOnHeader, checkFormErrors}

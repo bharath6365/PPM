@@ -2,6 +2,7 @@ import {GET_ALL_PROJECTS, GET_PROJECT, RESET_PROJECT, DELETE_PROJECT} from '../a
 
 const INITIAL_STATE = {
   projects: [],
+  projectsLoading: true,
   // The current project user is viewing.
   project: {}
 }
@@ -12,7 +13,8 @@ export default function (state=INITIAL_STATE, action) {
     case GET_ALL_PROJECTS:
       return {
         ...state,
-        projects: action.payload
+        projects: action.payload,
+        projectsLoading: false
       }
     
       case GET_PROJECT:

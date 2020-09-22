@@ -43,7 +43,8 @@ export default class UpdateProjectTaskForm extends Component {
       detailedDescription: '',
       dueDate: null,
       priority: 'LOW',
-      status: 'TODO'
+      status: 'TODO',
+      buttonLoading: false
     };
   }
 
@@ -102,7 +103,9 @@ export default class UpdateProjectTaskForm extends Component {
       id: this.props.currentTask.id,
     };
 
-    this.props.formSuccess(newTask);
+    this.props.formSuccess(newTask).finally(() => {
+      this.setState({buttonLoading: false})
+    });
   };
 
   closeModal = () => {
@@ -122,7 +125,9 @@ export default class UpdateProjectTaskForm extends Component {
             </EuiModalHeader>
 
             <EuiModalBody>
-              <div className="add-PBI">
+              <div className={`form-container 
+                ${Object.keys(errors).length > 0 ? 'error' : ''}
+              `}>
                 <EuiForm onSubmit={this.handleSubmit} fullWidth>
                   <div className="form-group">
                     <EuiFieldText
@@ -145,18 +150,6 @@ export default class UpdateProjectTaskForm extends Component {
                       onChange={this.handleChange}
                     />
                   </div>
-                  <EuiFormRow fullWidth label="Due Date">
-                    <EuiDatePicker fullWidth selected={dueDate} name="dueDate" onChange={this.handleDueDate} />
-                  </EuiFormRow>
-                  <EuiFormRow fullWidth label="Priority">
-                    <EuiSelect
-                      fullWidth
-                      value={priority}
-                      options={priorityOptions}
-                      name="priority"
-                      onChange={(e) => this.handleChange(e)}
-                    />
-                  </EuiFormRow>
 
                   <EuiFormRow fullWidth label="Status">
                     <EuiSelect
@@ -167,6 +160,22 @@ export default class UpdateProjectTaskForm extends Component {
                       onChange={(e) => this.handleChange(e)}
                     />
                   </EuiFormRow>
+
+                  <EuiFormRow fullWidth label="Due Date">
+                    <EuiDatePicker fullWidth selected={dueDate} name="dueDate" onChange={this.handleDueDate} />
+                  </EuiFormRow>
+
+
+                  <EuiFormRow fullWidth label="Priority">
+                    <EuiSelect
+                      fullWidth
+                      value={priority}
+                      options={priorityOptions}
+                      name="priority"
+                      onChange={(e) => this.handleChange(e)}
+                    />
+                  </EuiFormRow>
+
                 </EuiForm>
               </div>
             </EuiModalBody>
@@ -174,7 +183,7 @@ export default class UpdateProjectTaskForm extends Component {
             <EuiModalFooter>
               <EuiButtonEmpty onClick={this.closeModal}>Cancel</EuiButtonEmpty>
 
-              <EuiButton onClick={this.handleSubmit} fill>
+              <EuiButton isLoading={this.state.buttonLoading} onClick={this.handleSubmit} fill>
                 Save
               </EuiButton>
             </EuiModalFooter>

@@ -42,7 +42,7 @@ function App() {
     if (tokenDecoded.exp < currentTime) {
       // Logout the user.
       store.dispatch(logoutUser());
-      window.location.href = '/login';
+      window.location.href = '/';
     } else {
       // Successful token.
       setJWTTokenOnHeader(jwtToken);

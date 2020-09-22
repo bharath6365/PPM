@@ -8,6 +8,7 @@ import {
 } from '@elastic/eui';
 import { connect } from 'react-redux';
 import { loginUser } from '../../actions/securityActions';
+import { checkFormErrors } from '../../utils';
 // Make this a controlled component.
 class Login extends Component {
   constructor(props) {
@@ -15,7 +16,8 @@ class Login extends Component {
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      buttonLoading: false
     };
   }
 
@@ -25,6 +27,14 @@ class Login extends Component {
     if (this.props.validToken) {
       this.props.history.push('/dashboard');
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    checkFormErrors(nextProps, () => {
+      this.setState({
+        buttonLoading: false
+      })
+    })
   }
 
   // Handle Form Change
@@ -42,12 +52,15 @@ class Login extends Component {
       username: email,
       password
     };
+    this.setState({
+      buttonLoading: true
+    })
 
     this.props.loginUser(credentials, this.props.history);
   };
 
   render() {
-    const { email, password } = this.state;
+    const { email, password, buttonLoading } = this.state;
     const { errors } = this.props;
     return (
       <div className="page-container">
@@ -87,7 +100,7 @@ class Login extends Component {
                 />
                 <p>{errors.password}</p>
               </div>
-              <EuiButton fill color="primary" onClick={this.handleSubmit}>
+              <EuiButton isLoading = {buttonLoading} color="primary" onClick={this.handleSubmit}>
                 Submit
               </EuiButton>
             </EuiForm>

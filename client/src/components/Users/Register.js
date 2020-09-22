@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { EuiFieldText, EuiForm, EuiButton, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 import { connect } from 'react-redux';
 import { registerUser } from '../../actions/securityActions';
+import { checkFormErrors } from '../../utils';
 // Make this a controlled component.
 class Register extends Component {
   constructor(props) {
@@ -11,7 +12,8 @@ class Register extends Component {
       name: '',
       email: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      buttonLoading: false
     };
   }
 
@@ -21,6 +23,14 @@ class Register extends Component {
     if (this.props.validToken) {
       this.props.history.push('/dashboard');
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    checkFormErrors(nextProps, () => {
+      this.setState({
+        buttonLoading: false
+      })
+    })
   }
 
   // Handle Form Change
@@ -41,11 +51,15 @@ class Register extends Component {
       confirmPassword
     };
 
+    this.setState({
+      buttonLoading: true
+    })
+
     this.props.registerUser(newUser, this.props.history);
   };
 
   render() {
-    const { name, email, password, confirmPassword } = this.state;
+    const { name, email, password, confirmPassword, buttonLoading } = this.state;
     const { errors } = this.props;
     return (
       <div className="page-container">
@@ -112,7 +126,7 @@ class Register extends Component {
                 />
                 <p>{errors.confirmPassword}</p>
               </div>
-              <EuiButton fill color="primary" onClick={this.handleSubmit}>
+              <EuiButton isLoading={buttonLoading} fill color="primary" onClick={this.handleSubmit}>
                 Create Account
               </EuiButton>
             </EuiForm>

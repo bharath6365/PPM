@@ -6,12 +6,15 @@ import {
   EuiForm,
   EuiButton,
   EuiFlexGroup,
-  EuiFlexItem
+  EuiFlexItem,
+  EuiTourStep,
+  EuiText,
+  EuiLink
 } from '@elastic/eui';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createProject } from '../../actions/projectActions';
 
@@ -28,7 +31,8 @@ class CreateProjectForm extends Component {
       projectDescription: '',
       projectIdentifier: '',
       start_date: moment(),
-      end_date: ''
+      end_date: '',
+      tour: true
     };
   }
 
@@ -82,26 +86,33 @@ class CreateProjectForm extends Component {
     return (
       <div className="page-container">
         <EuiFlexGroup justifyContent="center">
-          <EuiFlexItem grow={4}>
-            <h2>Create Project Form</h2>
-            <p>Project Identifer let's you identify different projects by ID.</p>
+          <EuiFlexItem className="form-text-container" grow={4}>
+            <h2>Create a Project</h2>
+
+            {this.state.tour && (
+              <EuiTourStep
+                isStepOpen={true}
+                minWidth={300}
+                onFinish={() =>
+                  this.setState({
+                    tour: false
+                  })}
+                step={1}
+                stepsTotal={1}
+                title="Unique sequence number. eg: XYZV2"
+                subtitle="Project ID"
+                anchorPosition="downRight"
+              />
+            )}
           </EuiFlexItem>
-          <EuiFlexItem grow={8} 
-          className={`form-container 
+          <EuiFlexItem
+            grow={8}
+            className={`form-container 
             ${Object.keys(errors).length > 0 ? 'error' : ''}
-          `}>
+          `}
+          >
             <EuiForm onSubmit={this.handleSubmit} fullWidth>
-              <div className="form-group">
-                <EuiFieldText
-                  fullWidth
-                  placeholder="Project Name"
-                  name="projectName"
-                  onChange={this.onChange}
-                  value={this.state.projectName}
-                  aria-label="Project Name"
-                />
-                <p>{errors.projectName}</p>
-              </div>
+              
 
               <div className="form-group">
                 <EuiFieldText
@@ -114,6 +125,20 @@ class CreateProjectForm extends Component {
                 />
                 <p>{errors.projectIdentifier}</p>
               </div>
+
+              <div className="form-group">
+                <EuiFieldText
+                  fullWidth
+                  placeholder="Project Name"
+                  name="projectName"
+                  onChange={this.onChange}
+                  value={this.state.projectName}
+                  aria-label="Project Name"
+                />
+                <p>{errors.projectName}</p>
+              </div>
+
+
               <div className="form-group">
                 <EuiTextArea
                   fullWidth
