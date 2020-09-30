@@ -84,7 +84,7 @@ export const deleteProject = (identifier, history) => {
         payload: identifier
       })
 
-      toastr.info('Success', 'Project deleted');
+      toastr.success('Success', 'Project deleted');
       
     } catch(e) {
       console.error(e);

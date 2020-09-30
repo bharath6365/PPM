@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
 import { EuiFlexItem, EuiFlexGroup, EuiButton } from '@elastic/eui';
 
-export default class Home extends Component {
+class Home extends Component {
   render() {
+    const {user, history} = this.props;
+    if (user.id) {
+      // Redirect to dashboard.
+      history.push('/dashboard');
+    }
     return (
       <div className="home-wrapper">
         <div className="banner-content">
@@ -28,3 +34,9 @@ export default class Home extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  user: state.security.user
+})
+
+export default connect(mapStateToProps)(Home);

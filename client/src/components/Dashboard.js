@@ -31,7 +31,7 @@ class Dashboard extends Component {
 
         {projectsLoading && <PageLoader />}
 
-        {!projectsLoading && project.projects.length === 0 && (
+        {projectsLoading === false && project.projects.length === 0 && (
           <Callout
             title="BareBones here."
             color="primary"
@@ -53,7 +53,7 @@ class Dashboard extends Component {
 
 const mapStateToProps = (state) => ({
   project: state.project,
-  projectsLoaded: state.projectsLoading
+  projectsLoading: state.project.projectsLoading
 });
 
 Dashboard.propTypes = {

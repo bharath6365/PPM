@@ -20,7 +20,7 @@ export const addProjectTask = (backlogId, incomingTask) => {
   return async (dispatch) => {
     try {
       const res = await axios.post(`${BACKENDHOST}/api/backlog/${backlogId}`, incomingTask);
-      toastr.info('Success', 'Task Created');
+      toastr.success('Success', 'Task Created');
       dispatch({
         type: UPDATE_BACKLOG,
         payload: res.data
@@ -67,13 +67,13 @@ export const updateProjecTask = (backlogId, incomingTask) => {
   return async (dispatch) => {
     try {
       const res = await axios.patch(`${BACKENDHOST}/api/backlog/${backlogId}`, incomingTask);
-      toastr.info('Success', 'Task Updated');
+      toastr.success('Success', 'Task Updated');
       dispatch({
         type: UPDATE_PROJECT_TASK,
         payload: res.data
       });
 
-      toastr.info('Success', 'Task Updated');
+      toastr.success('Success', 'Task Updated');
     } catch (e) {
       dispatch({
         type: GET_FORM_ERRORS,
@@ -106,7 +106,7 @@ export const deleteProjectTask = (projectIdentifier, taskSequence) => {
           taskSequence
         }
       });
-      toastr.info('Success', 'Task Deleted');
+      toastr.success('Success', 'Task Deleted');
     }
     } catch (e) {
       toastr.error('Failiure', 'Unable to delete the task');
