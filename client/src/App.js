@@ -11,7 +11,7 @@ import jwt_decode from 'jwt-decode';
 import { setJWTTokenOnHeader } from './utils';
 import { SET_CURRENT_USER } from './actions/types';
 
-import './App.scss';
+import './App.css';
 import './components/Dashboard';
 import Dashboard from './components/Dashboard';
 import Header from './components/layout/Header';

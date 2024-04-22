@@ -17,5 +17,17 @@ const checkFormErrors = (nextProps, callback) => {
   }
 }
 
+const generateUniqueSequence = () => {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let sequence = '';
+  
+  for (let i = 0; i < 5; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      sequence += characters.charAt(randomIndex);
+  }
+  
+  return sequence;
+}
 
-export {setJWTTokenOnHeader, checkFormErrors}
+
+export {setJWTTokenOnHeader, checkFormErrors, generateUniqueSequence}

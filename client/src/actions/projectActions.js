@@ -43,7 +43,7 @@ export const getAllProjects = () => {
         payload: res.data
       })
     } catch(e) {
-      console.log('Catch block runs you fool', e);
+      console.error('Error while getting all projects.', e);
     }
   }
 }

@@ -1,0 +1,23 @@
+version: '3.1'
+
+services:
+  db:
+    image: mysql:8.0  # MySQL version 8.0, which has ARM64 support
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: ppm
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mydb:/var/lib/mysql
+    networks:
+      - mynetwork
+
+volumes:
+  mydb:
+
+networks:
+  mynetwork:
+    driver: bridge

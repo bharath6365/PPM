@@ -17,6 +17,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createProject } from '../../actions/projectActions';
+import {generateUniqueSequence} from '../../utils';
 
 /*
   Form input names should match the backend.
@@ -32,7 +33,7 @@ class CreateProjectForm extends Component {
       projectIdentifier: '',
       start_date: moment(),
       end_date: '',
-      tour: true
+      isLoading: false
     };
   }
 
@@ -65,20 +66,28 @@ class CreateProjectForm extends Component {
    Form Submission.
  */
   handleSubmit = (e) => {
-    e.preventDefault();
-    const { projectName, projectDescription, projectIdentifier, start_date, end_date } = this.state;
-    const { createProject, history } = this.props;
-    const newProject = {
-      projectName,
-      projectDescription,
-      projectIdentifier,
-      start_date,
-      end_date,
-      projectOwner: this.props.username
-    };
-
-    // Pass it off to the action
-    createProject(newProject, history);
+    try {
+      e.preventDefault();
+      this.setState({isLoading: true})
+      const { projectName, projectDescription, start_date, end_date } = this.state;
+  
+      const projectIdentifier = generateUniqueSequence()
+      const { createProject, history } = this.props;
+      const newProject = {
+        projectName,
+        projectDescription,
+        projectIdentifier,
+        start_date,
+        end_date,
+        projectOwner: this.props.username
+      };
+  
+      // Pass it off to the action
+      createProject(newProject, history);
+    } finally {
+       this.setState({isLoading: false})
+    }
+   
   };
 
   render() {
@@ -88,22 +97,6 @@ class CreateProjectForm extends Component {
         <EuiFlexGroup justifyContent="center">
           <EuiFlexItem className="form-text-container" grow={4}>
             <h2>Create a Project</h2>
-
-            {this.state.tour && (
-              <EuiTourStep
-                isStepOpen={true}
-                minWidth={300}
-                onFinish={() =>
-                  this.setState({
-                    tour: false
-                  })}
-                step={1}
-                stepsTotal={1}
-                title="Unique sequence number. eg: XYZV2"
-                subtitle="Project ID"
-                anchorPosition="downRight"
-              />
-            )}
           </EuiFlexItem>
           <EuiFlexItem
             grow={8}
@@ -113,18 +106,6 @@ class CreateProjectForm extends Component {
           >
             <EuiForm onSubmit={this.handleSubmit} fullWidth>
               
-
-              <div className="form-group">
-                <EuiFieldText
-                  fullWidth
-                  placeholder="Unique Project ID"
-                  name="projectIdentifier"
-                  onChange={this.onChange}
-                  value={this.state.projectIdentifier}
-                  aria-label="Project ID"
-                />
-                <p>{errors.projectIdentifier}</p>
-              </div>
 
               <div className="form-group">
                 <EuiFieldText
@@ -164,7 +145,7 @@ class CreateProjectForm extends Component {
                 <EuiDatePicker fullWidth name="end_date" selected={this.state.end_date} onChange={this.handleEndDate} />
               </EuiFormRow>
 
-              <EuiButton fill color="primary" onClick={this.handleSubmit}>
+              <EuiButton isDisabled={this.state.isLoading} isLoading={this.state.isLoading} fill color="primary" onClick={this.handleSubmit}>
                 Submit
               </EuiButton>
             </EuiForm>
