@@ -6,14 +6,13 @@ WORKDIR /app
 COPY src ./src
 COPY pom.xml .
 
-# Build the application
+# Build the applicationc
 RUN mvn clean package -DskipTests
 
 # Stage 2: Create the Docker final image
 FROM openjdk:8-jdk-alpine
 EXPOSE 8080
 COPY --from=build /app/target/*.jar app.jar
-ENV DATABASE_URL=${DATABASE_URL}
-ENV DATABASE_USERNAME=${DATABASE_USERNAME}
-ENV DATABASE_PASSWORD=${DATABASE_PASSWORD}
+ENV MYSQLUSER=${DATABASE_USERNAME}
+ENV MYSQLPASSWORD=${DATABASE_PASSWORD}
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
