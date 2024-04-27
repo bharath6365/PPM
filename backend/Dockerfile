@@ -13,4 +13,7 @@ RUN mvn clean package -DskipTests
 FROM openjdk:8-jdk-alpine
 EXPOSE 8080
 COPY --from=build /app/target/*.jar app.jar
+ENV DATABASE_URL=${DATABASE_URL}
+ENV DATABASE_USERNAME=${DATABASE_USERNAME}
+ENV DATABASE_PASSWORD=${DATABASE_PASSWORD}
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
